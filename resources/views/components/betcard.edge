@@ -1,0 +1,93 @@
+{{--
+  Carte pronostic — l'unité de contenu de BetPlus.
+  Props : author {name, handle, initials, color, verified, time}, match {competition, home, away, homeCrest, awayCrest, homeColor, awayColor, kickoff, live}, pick {label, cote, confidence, status}, analysis, stats {likes, comments, views, win}, comments [{name, initials, color, time, text}]
+--}}
+<article class="bet-card">
+  <div class="bet-head">
+    <div class="avatar {{ author.color }}" style="width:42px;height:42px;font-size:15px">{{ author.initials }}</div>
+    <div class="bet-author">
+      <div class="bet-author-name">
+        {{ author.name }}
+        @if(author.verified)
+          <svg class="verified" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 4.6l3.84-.44 1.06 3.72 3.1 2.3-1.7 3.42 1.7 3.42-3.1 2.3-1.06 3.72-3.84-.44L12 22l-3.09-1.4-3.84.44-1.06-3.72-3.1-2.3L2.6 11.6.9 8.18l3.1-2.3 1.07-3.72 3.84.44Z" opacity="0"/><path d="M12 1.5 14.6 4l3.5-.5 1 3.4 2.9 2.1-1.5 3 1.5 3-2.9 2.1-1 3.4-3.5-.5L12 22.5 9.4 20l-3.5.5-1-3.4L2 15l1.5-3L2 9l2.9-2.1 1-3.4 3.5.5Zm-1.2 13.7 5.5-5.5-1.4-1.4-4.1 4.1-1.9-1.9-1.4 1.4Z"/></svg>
+        @end
+      </div>
+      <div class="bet-author-meta">{{ author.handle }} · il y a {{ author.time }}</div>
+    </div>
+    <div class="bet-head-actions" x-data="{ following: false }">
+      <button class="btn-follow" :class="following && 'following'" @click="following = !following" x-text="following ? 'Suivi' : 'Suivre'">Suivre</button>
+      <button class="icon-btn" aria-label="Options">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="match-box">
+    <div class="match-meta">
+      <span>{{ match.competition }}</span>
+      @if(match.live)
+        <span class="live-dot">Live · {{ match.minute }}</span>
+      @else
+        <span>{{ match.kickoff }}</span>
+      @end
+    </div>
+    <div class="match-teams">
+      <div class="team"><span class="crest" style="background:{{ match.homeColor }}">{{ match.homeCrest }}</span>{{ match.home }}</div>
+      <span class="match-vs">VS</span>
+      <div class="team"><span class="crest" style="background:{{ match.awayColor }}">{{ match.awayCrest }}</span>{{ match.away }}</div>
+    </div>
+    <div class="pick-row">
+      <span class="pick-label">Prono</span>
+      <span class="pick-value">{{ pick.label }}</span>
+      <div class="confidence">
+        <div class="confidence-bar"><i style="width:{{ pick.confidence }}%"></i></div>
+        <span>{{ pick.confidence }}%</span>
+      </div>
+      <span class="cote">{{ pick.cote }}</span>
+      @if(pick.status === 'won')
+        <span class="status-chip status-won">Gagné</span>
+      @elseif(pick.status === 'lost')
+        <span class="status-chip status-lost">Perdu</span>
+      @else
+        <span class="status-chip status-live">En cours</span>
+      @end
+    </div>
+  </div>
+
+  <p class="bet-analysis">{{{ analysis }}}</p>
+
+  <div class="bet-foot">
+    <button class="bet-action" x-data="{ liked: false, count: {{ stats.likes }} }" :class="liked && 'liked'" @click="liked = !liked; count += liked ? 1 : -1">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      <span class="num" x-text="count">{{ stats.likes }}</span>
+    </button>
+    <button class="bet-action">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="num">{{ stats.comments }}</span>
+    </button>
+    <button class="bet-action">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span class="num">{{ stats.views }}</span>
+    </button>
+    <span class="potential-win">Gain potentiel <span class="num">{{ stats.win }}</span></span>
+    <button class="btn-copy" x-data="{ copied: false }" :class="copied && 'btn-copied'" @click="copied = !copied" x-text="copied ? 'Pari suivi' : 'Copier le pari'">Copier le pari</button>
+  </div>
+
+  @if(comments && comments.length)
+    <div class="comments">
+      @each(comment in comments)
+        <div class="comment">
+          <div class="avatar {{ comment.color }}" style="width:30px;height:30px;font-size:11px">{{ comment.initials }}</div>
+          <div class="comment-body">
+            <h4>{{ comment.name }}</h4><time>{{ comment.time }}</time>
+            <p>{{ comment.text }}</p>
+          </div>
+        </div>
+      @end
+      <form class="comment-form">
+        <div class="avatar avatar-a" style="width:30px;height:30px;font-size:11px">JD</div>
+        <input type="text" placeholder="Réagir à ce pronostic…" />
+      </form>
+    </div>
+  @end
+</article>

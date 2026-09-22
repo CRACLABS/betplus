@@ -1,23 +1,278 @@
-@layout()
-  <div class="hero">
-    <h1>It works — welcome to the simplicity of a Hypermedia app</h1>
-    <p>
-      A lightweight foundation for building modern web interfaces — straightforward, flexible, and true to the web's core simplicity.
-    </p>
-  </div>
+@layout({ title: 'BetPlus — Accueil' })
+  <div class="page">
 
-  <div class="cards">
-    <a href="https://insiders.adonisjs.com/docs/v7-alpha/introduction" target="_blank">
-      <h3>Official Docs &nbsp;›</h3>
-      <p>Comprehensive reference for building with AdonisJS</p>
-    </a>
-    <a href="https://adocasts.com/" target="_blank">
-      <h3>Adocasts &nbsp;›</h3>
-      <p>Guided video tutorials for everyday development</p>
-    </a>
-    <a href="https://discord.gg/vDcEjq6" target="_blank">
-      <h3>Discord &nbsp;›</h3>
-      <p>Connect with developers building with AdonisJS every day</p>
-    </a>
+    {{-- ============================ COLONNE GAUCHE ============================ --}}
+    <aside class="sidebar-left">
+      <section class="card profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-body">
+          <div class="avatar avatar-a avatar-live">JD</div>
+          <div class="profile-name">John Doe</div>
+          <div class="profile-rank">Tipster <b>Pro</b> · @johndoe</div>
+          <div class="profile-stats">
+            <div>
+              <div class="stat-value green">3 400</div>
+              <div class="stat-label">Crédits</div>
+            </div>
+            <div>
+              <div class="stat-value">155</div>
+              <div class="stat-label">Abonnés</div>
+            </div>
+            <div>
+              <div class="stat-value green">68%</div>
+              <div class="stat-label">Réussite</div>
+            </div>
+          </div>
+          <a href="#" class="profile-link">Voir mon profil</a>
+        </div>
+      </section>
+
+      <section class="widget">
+        <div class="widget-title">
+          <h3>Groupes suggérés</h3>
+          <a href="#">Tout voir</a>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#1d3a2c;color:#1fd67a">LP</div>
+          <div class="sug-text">
+            <h4>Ligue des Pronos</h4>
+            <span>12,4k membres</span>
+          </div>
+          <button class="sug-action" aria-label="Rejoindre"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#3a2d1d;color:#ffb224">PL</div>
+          <div class="sug-text">
+            <h4>Premier League FR</h4>
+            <span>8,1k membres</span>
+          </div>
+          <button class="sug-action" aria-label="Rejoindre"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#2d1d3a;color:#b98cff">NBA</div>
+          <div class="sug-text">
+            <h4>NBA Insider</h4>
+            <span>5,7k membres</span>
+          </div>
+          <button class="sug-action" aria-label="Rejoindre"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#1d2d3a;color:#4d9fff">S</div>
+          <div class="sug-text">
+            <h4>Safe Bettors</h4>
+            <span>3,9k membres</span>
+          </div>
+          <button class="sug-action" aria-label="Rejoindre"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#3a1d28;color:#ff4d5e">C1</div>
+          <div class="sug-text">
+            <h4>Champions League</h4>
+            <span>15,2k membres</span>
+          </div>
+          <button class="sug-action" aria-label="Rejoindre"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+      </section>
+
+      <nav class="foot-links">
+        <a href="#">Aide</a>
+        <a href="#">À propos</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Règles de la communauté</a>
+        <a href="#">Cookies</a>
+        <a href="#">Langue</a>
+      </nav>
+      <p class="copyright">BetPlus © 2026 — Pariez responsable. 18+</p>
+    </aside>
+
+    {{-- ============================== FEED CENTRAL ============================ --}}
+    <div class="feed">
+      <section class="card composer">
+        <div class="composer-top">
+          <div class="avatar avatar-a">JD</div>
+          <div class="composer-input">Partage ton analyse, publie un pronostic…</div>
+        </div>
+        <div class="composer-actions">
+          <button class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-6 4 3 5-8"/></svg>
+            Publier un pronostic
+          </button>
+          <button class="btn btn-ghost">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Créer un événement
+          </button>
+        </div>
+      </section>
+
+      <section class="card tipsters-strip">
+        <div class="widget-title">
+          <h3>Meilleurs pronostiqueurs</h3>
+          <a href="#">Classement</a>
+        </div>
+        <div class="tipsters-row">
+          <div class="tipster-card">
+            <div class="avatar avatar-b">MK</div>
+            <h4>Maxime K.</h4>
+            <span class="tipster-spec">Football · Ligue 1</span>
+            <div class="tipster-rate">74% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+          <div class="tipster-card">
+            <div class="avatar avatar-c">SL</div>
+            <h4>Sarah Lopes</h4>
+            <span class="tipster-spec">Tennis · ATP</span>
+            <div class="tipster-rate">71% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+          <div class="tipster-card">
+            <div class="avatar avatar-d">KB</div>
+            <h4>Karim B.</h4>
+            <span class="tipster-spec">Basket · NBA</span>
+            <div class="tipster-rate">69% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+          <div class="tipster-card">
+            <div class="avatar avatar-e">ND</div>
+            <h4>Nina D.</h4>
+            <span class="tipster-spec">Football · Liga</span>
+            <div class="tipster-rate">67% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+          <div class="tipster-card">
+            <div class="avatar avatar-a">TM</div>
+            <h4>Thomas M.</h4>
+            <span class="tipster-spec">Rugby · Top 14</span>
+            <div class="tipster-rate">66% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+          <div class="tipster-card">
+            <div class="avatar avatar-b">LC</div>
+            <h4>Léa Costa</h4>
+            <span class="tipster-spec">Football · Serie A</span>
+            <div class="tipster-rate">64% réussite</div>
+            <button class="btn-follow">Suivre</button>
+          </div>
+        </div>
+      </section>
+
+      @betcard({
+        author: { name: 'Maxime K.', initials: 'MK', color: 'avatar-b', verified: true, handle: '@maximek', time: '3 min' },
+        match: { competition: 'Ligue 1 · Journée 26', home: 'Paris SG', away: 'Marseille', homeCrest: 'PSG', awayCrest: 'OM', homeColor: '#1d3f73', awayColor: '#2d7ecf', live: true, minute: "67'" },
+        pick: { label: 'Victoire PSG & +2,5 buts', cote: '2.40', confidence: 78, status: 'live' },
+        analysis: 'Le PSG reste sur <b>7 victoires consécutives à domicile</b> et l\'OM arrive avec une défense décimée. Le contexte est parfait pour un match ouvert — je valide le combo.',
+        stats: { likes: 248, comments: 42, views: 3200, win: '+140 Cr' },
+        comments: [
+          { name: 'Karim B.', initials: 'KB', color: 'avatar-d', time: 'il y a 2 min', text: 'Cote intéressante, je te suis dessus.' },
+          { name: 'Léa Costa', initials: 'LC', color: 'avatar-b', time: 'il y a 1 min', text: 'Attention à la rotation côté parisien, Luis Enrique tourne souvent avant la C1.' }
+        ]
+      })
+      @end
+
+      @betcard({
+        author: { name: 'Sarah Lopes', initials: 'SL', color: 'avatar-c', verified: true, handle: '@sarahl', time: '1 h' },
+        match: { competition: 'NBA · Saison régulière', home: 'Boston Celtics', away: 'LA Lakers', homeCrest: 'BOS', awayColor: '#5b2d84', awayCrest: 'LAL', homeColor: '#0d6b3f', kickoff: 'Demain · 02:30' },
+        pick: { label: 'Boston gagne de 6+ points', cote: '1.95', confidence: 64, status: 'live' },
+        analysis: 'Boston est <b>18-4 à domicile</b> cette saison et les Lakers jouent leur 4e match en 6 nuits. Fatigue + TD Garden = écart creusé au 4e quart-temps.',
+        stats: { likes: 156, comments: 18, views: 1900, win: '+95 Cr' }
+      })
+      @end
+
+      @betcard({
+        author: { name: 'Nina D.', initials: 'ND', color: 'avatar-e', verified: false, handle: '@ninad', time: '4 h' },
+        match: { competition: 'Liga · Journée 28', home: 'Real Madrid', away: 'FC Séville', homeCrest: 'RMA', awayCrest: 'SEV', homeColor: '#3a4a5c', awayColor: '#8f2d3a', kickoff: 'Hier · 21:00' },
+        pick: { label: 'Real Madrid -1,5', cote: '2.10', confidence: 82, status: 'won' },
+        analysis: 'Analyse validée : le Real a dominé de bout en bout, <b>victoire 3-0</b>. 12e prono gagnant sur les 15 derniers — merci pour la confiance.',
+        stats: { likes: 512, comments: 87, views: 8600, win: '+210 Cr' }
+      })
+      @end
+    </div>
+
+    {{-- ============================ COLONNE DROITE ============================ --}}
+    <aside class="sidebar-right">
+      <section class="widget channel-promo">
+        <h3>Gérez votre chaîne</h3>
+        <p>Partagez vos pronostics en exclusivité et monétisez votre expertise auprès de vos abonnés.</p>
+        <a href="#" class="btn btn-primary">Voir ma chaîne</a>
+      </section>
+
+      <section class="widget">
+        <div class="widget-title">
+          <h3>Meilleures chaînes</h3>
+          <a href="#">Tout voir</a>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#1d3a2c;color:#1fd67a">MK</div>
+          <div class="sug-text">
+            <h4>MK Pro Tips</h4>
+            <span>Ligue 1 · 2,1k abonnés</span>
+          </div>
+          <span class="price-tag">250 Cr/mois</span>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#3a2d1d;color:#ffb224">TB</div>
+          <div class="sug-text">
+            <h4>Tennis Break</h4>
+            <span>Grand Chelem · 980 abonnés</span>
+          </div>
+          <span class="price-tag">150 Cr/mois</span>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#2d1d3a;color:#b98cff">NB</div>
+          <div class="sug-text">
+            <h4>NBA Nights</h4>
+            <span>NBA · 3,4k abonnés</span>
+          </div>
+          <span class="price-tag">300 Cr/mois</span>
+        </div>
+        <div class="sug-item">
+          <div class="sug-tile" style="background:#1d2d3a;color:#4d9fff">CC</div>
+          <div class="sug-text">
+            <h4>Combiné Club</h4>
+            <span>Multi-sports · 1,6k abonnés</span>
+          </div>
+          <span class="price-tag">200 Cr/mois</span>
+        </div>
+      </section>
+
+      <section class="widget">
+        <div class="widget-title">
+          <h3>Événements à venir</h3>
+          <a href="#">Agenda</a>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><div><b>21</b><span>Sep</span></div></div>
+          <div class="event-text">
+            <h4>Arsenal – Tottenham</h4>
+            <span>Premier League · 17:30</span>
+          </div>
+          <span class="event-odd">2.15</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><div><b>21</b><span>Sep</span></div></div>
+          <div class="event-text">
+            <h4>Inter – AC Milan</h4>
+            <span>Serie A · 20:45</span>
+          </div>
+          <span class="event-odd">2.60</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><div><b>22</b><span>Sep</span></div></div>
+          <div class="event-text">
+            <h4>Lakers – Warriors</h4>
+            <span>NBA · 04:00</span>
+          </div>
+          <span class="event-odd">1.88</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><div><b>23</b><span>Sep</span></div></div>
+          <div class="event-text">
+            <h4>Munoz – Alcaraz</h4>
+            <span>ATP 500 · 14:00</span>
+          </div>
+          <span class="event-odd">1.22</span>
+        </div>
+      </section>
+    </aside>
+
   </div>
 @end

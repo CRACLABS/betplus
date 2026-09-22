@@ -12,7 +12,7 @@ export default class NewAccountController {
    * Display the signup page
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/auth/signup')
+    return view.render('pages/gate', { tab: 'signup' })
   }
 
   /**

@@ -11,7 +11,7 @@ export default class SessionController {
    * Display the login page
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/auth/login')
+    return view.render('pages/gate', { tab: 'login' })
   }
 
   /**
@@ -30,6 +30,6 @@ export default class SessionController {
    */
   async destroy({ auth, response }: HttpContext) {
     await auth.use('web').logout()
-    response.redirect().toRoute('landing')
+    response.redirect('/')
   }
 }

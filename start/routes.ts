@@ -11,9 +11,21 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/landing').as('landing')
+router.on('/').render('pages/gate', { tab: 'login' }).as('gate').use(middleware.guest())
 
 router.on('/feed').render('pages/home').as('home').use(middleware.auth())
+
+router
+  .post('/premium/subscribe', async ({ auth, response, session }) => {
+    // TODO: brancher un vrai paiement — pour l'instant on simule l'abonnement
+    const user = auth.user!
+    user.isPremium = true
+    await user.save()
+    session.flash('success', 'Bienvenue dans BetPlus Premium')
+    return response.redirect().toRoute('home')
+  })
+  .as('premium.subscribe')
+  .use(middleware.auth())
 
 router
   .group(() => {

@@ -1,0 +1,148 @@
+@layout({ title: 'BetPlus — Connexion', nav: 'none' })
+  <div class="gate" x-data="{ tab: '{{ tab ?? 'login' }}' }">
+
+    {{-- ==================== PANNEAU GAUCHE — MARQUE ==================== --}}
+    <section class="gate-brand">
+      <a href="/" class="brand">
+        <span class="brand-mark">B+</span>
+        <span>Bet<b>Plus</b></span>
+      </a>
+
+      <div class="gate-brand-tagline">
+        <h1>Les paris sportifs, <em>sous un autre angle.</em></h1>
+        <p>
+          BetPlus te fait découvrir les pronostics des meilleurs tipsters, vérifiés sur leurs
+          résultats réels. Suis, copie, encaisse — et fais-toi chaque semaine un peu d'argent
+          de poche en plus.
+        </p>
+
+        <div class="gate-features">
+          <div class="gate-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Pronostics vérifiés et historiques transparents
+          </div>
+          <div class="gate-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Copie les paris des meilleurs en un clic
+          </div>
+          <div class="gate-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Chaînes premium des tipsters les plus rentables
+          </div>
+        </div>
+      </div>
+
+      <div class="gate-stats">
+        <div class="gate-stat">
+          <div class="stat-value num">2 400+</div>
+          <div class="stat-label">Tipsters actifs</div>
+        </div>
+        <div class="gate-stat">
+          <div class="stat-value num">68%</div>
+          <div class="stat-label">Réussite moyenne du top 100</div>
+        </div>
+        <div class="gate-stat">
+          <div class="stat-value num">150k</div>
+          <div class="stat-label">Membres</div>
+        </div>
+      </div>
+      <p class="gate-legal">Pariez responsable. Jouer comporte des risques. 18+</p>
+    </section>
+
+    {{-- ==================== PANNEAU DROIT — FORMULAIRES ==================== --}}
+    <section class="gate-form">
+      <div class="themetoggle-slot">
+        @!themetoggle()
+      </div>
+
+      <div class="gate-card">
+        <h2 x-text="tab === 'login' ? 'Bon retour' : 'Rejoins la communauté'">Bon retour</h2>
+        <p x-text="tab === 'login' ? 'Connecte-toi pour retrouver ton fil de pronostics.' : 'Crée ton compte en 30 secondes, parieur ou pronostiqueur.'"></p>
+
+        <div class="auth-tabs" role="tablist">
+          <button type="button" role="tab" :class="tab === 'login' && 'active'" @click="tab = 'login'">Se connecter</button>
+          <button type="button" role="tab" :class="tab === 'signup' && 'active'" @click="tab = 'signup'">S'inscrire</button>
+        </div>
+
+        {{-- Connexion --}}
+        <div x-show="tab === 'login'" @if((tab ?? 'login') !== 'login') x-cloak @end>
+          @form({ route: 'session.store', method: 'POST' })
+            <div>
+              @field.root({ name: 'email' })
+                @!field.label({ text: 'Email' })
+                @!input.control({ type: 'email', autocomplete: 'email', placeholder: 'toi@exemple.com' })
+                @!field.error()
+              @end
+            </div>
+            <div>
+              @field.root({ name: 'password' })
+                @!field.label({ text: 'Mot de passe' })
+                @!input.control({ type: 'password', autocomplete: 'current-password', placeholder: '••••••••' })
+                @!field.error()
+              @end
+            </div>
+            <div class="form-foot">
+              <label class="checkline"><input type="checkbox" name="rememberMe" /> Se souvenir de moi</label>
+              <a href="#">Mot de passe oublié ?</a>
+            </div>
+            <div>
+              @!button({ text: 'Se connecter', type: 'submit' })
+            </div>
+          @end
+        </div>
+
+        {{-- Inscription --}}
+        <div x-show="tab === 'signup'" @if((tab ?? 'login') !== 'signup') x-cloak @end>
+          @form({ route: 'new_account.store', method: 'POST' })
+            <div>
+              <label style="margin-bottom:8px">Tu t'inscrives en tant que</label>
+              <div class="role-picker">
+                <label>
+                  <input type="radio" name="role" value="bettor" checked />
+                  Parieur
+                  <small>Je suis les tipsters et je copie leurs pronos</small>
+                </label>
+                <label>
+                  <input type="radio" name="role" value="tipster" />
+                  Pronostiqueur
+                  <small>Je publie mes pronos et je monétise ma chaîne</small>
+                </label>
+              </div>
+            </div>
+            <div>
+              @field.root({ name: 'fullName' })
+                @!field.label({ text: 'Nom complet' })
+                @!input.control({ autocomplete: 'name', placeholder: 'John Doe' })
+                @!field.error()
+              @end
+            </div>
+            <div>
+              @field.root({ name: 'email' })
+                @!field.label({ text: 'Email' })
+                @!input.control({ type: 'email', autocomplete: 'email', placeholder: 'toi@exemple.com' })
+                @!field.error()
+              @end
+            </div>
+            <div>
+              @field.root({ name: 'password' })
+                @!field.label({ text: 'Mot de passe' })
+                @!input.control({ type: 'password', autocomplete: 'new-password', placeholder: '8 caractères minimum' })
+                @!field.error()
+              @end
+            </div>
+            <div>
+              @field.root({ name: 'passwordConfirmation' })
+                @!field.label({ text: 'Confirmer le mot de passe' })
+                @!input.control({ type: 'password', autocomplete: 'new-password', placeholder: '••••••••' })
+                @!field.error()
+              @end
+            </div>
+            <div>
+              @!button({ text: 'Créer mon compte', type: 'submit' })
+            </div>
+          @end
+        </div>
+      </div>
+    </section>
+  </div>
+@end

@@ -169,6 +169,7 @@
       @end
 
       @betcard({
+        premium: true,
         author: { name: 'Sarah Lopes', initials: 'SL', color: 'avatar-c', verified: true, handle: '@sarahl', time: '1 h' },
         match: { competition: 'NBA · Saison régulière', home: 'Boston Celtics', away: 'LA Lakers', homeCrest: 'BOS', awayColor: '#5b2d84', awayCrest: 'LAL', homeColor: '#0d6b3f', kickoff: 'Demain · 02:30' },
         pick: { label: 'Boston gagne de 6+ points', cote: '1.95', confidence: 64, status: 'live' },
@@ -195,11 +196,12 @@
         <a href="#" class="btn btn-primary">Voir ma chaîne</a>
       </section>
 
-      <section class="widget">
+      <section class="widget {{ !auth.user?.isPremium ? 'premium-lock' : '' }}">
         <div class="widget-title">
           <h3>Meilleures chaînes</h3>
           <a href="#">Tout voir</a>
         </div>
+        <div class="{{ !auth.user?.isPremium ? 'locked-content' : '' }}">
         <div class="sug-item">
           <div class="sug-tile" style="background:#1d3a2c;color:#1fd67a">MK</div>
           <div class="sug-text">
@@ -232,6 +234,19 @@
           </div>
           <span class="price-tag">200 Cr/mois</span>
         </div>
+        </div>
+        @if(!auth.user?.isPremium)
+          <div class="premium-veil">
+            <div class="lock-icon">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h4>Chaînes réservées aux membres Premium</h4>
+            <p>Débloque l'accès aux chaînes privées des meilleurs tipsters.</p>
+            @form({ route: 'premium.subscribe', method: 'POST' })
+              <button type="submit" class="btn btn-primary">Passer Premium</button>
+            @end
+          </div>
+        @end
       </section>
 
       <section class="widget">

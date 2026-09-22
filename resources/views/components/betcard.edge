@@ -15,6 +15,12 @@
       <div class="bet-author-meta">{{ author.handle }} · il y a {{ author.time }}</div>
     </div>
     <div class="bet-head-actions" x-data="{ following: false }">
+      @if(premium)
+        <span class="premium-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 1 15 8l7.5 1-5.4 5.2 1.3 7.4-6.9-3.6-6.9 3.6 1.3-7.4L.5 9 8 8Z"/></svg>
+          Premium
+        </span>
+      @end
       <button class="btn-follow" :class="following && 'following'" @click="following = !following" x-text="following ? 'Suivi' : 'Suivre'">Suivre</button>
       <button class="icon-btn" aria-label="Options">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
@@ -22,7 +28,9 @@
     </div>
   </div>
 
-  <div class="match-box">
+  @assign(isLocked = premium && !auth.user?.isPremium)
+  <div class="match-box {{ isLocked ? 'premium-lock' : '' }}">
+    <div class="{{ isLocked ? 'locked-content' : '' }}">
     <div class="match-meta">
       <span>{{ match.competition }}</span>
       @if(match.live)
@@ -52,6 +60,19 @@
         <span class="status-chip status-live">En cours</span>
       @end
     </div>
+    </div>
+    @if(isLocked)
+      <div class="premium-veil">
+        <div class="lock-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h4>Pronostic réservé aux membres Premium</h4>
+        <p>Débloque la cote et l'analyse complète de {{ author.name }}.</p>
+        @form({ route: 'premium.subscribe', method: 'POST' })
+          <button type="submit" class="btn btn-primary">Passer Premium</button>
+        @end
+      </div>
+    @end
   </div>
 
   <p class="bet-analysis">{{{ analysis }}}</p>

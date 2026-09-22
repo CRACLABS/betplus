@@ -14,7 +14,7 @@
   <body>
     @if(nav === 'public')
       @include('partials/header_public')
-    @else
+    @elseif(nav !== 'none')
       @include('partials/header')
     @end
     <main>

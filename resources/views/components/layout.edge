@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title ?? 'BetPlus — Le réseau social des pronostics' }}</title>
     <meta name="description" content="BetPlus — suivez les meilleurs pronostiqueurs, publiez vos pronostics et rejoignez la communauté." />
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem('betplus-theme') || 'dark'
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
   <body>
-    @include('partials/header')
+    @if(nav === 'public')
+      @include('partials/header_public')
+    @else
+      @include('partials/header')
+    @end
     <main>
       @include('partials/flash_alerts')
       {{{ await $slots.main() }}}

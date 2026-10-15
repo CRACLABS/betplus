@@ -7,6 +7,49 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class FixtureSchema extends BaseModel {
+  static $columns = ['awayScore', 'awayTeamId', 'awayTeamName', 'country', 'createdAt', 'eventId', 'homeScore', 'homeTeamId', 'homeTeamName', 'id', 'matchDate', 'payload', 'round', 'startsAt', 'status', 'tournamentId', 'tournamentName', 'updatedAt', 'winnerCode'] as const
+  $columns = FixtureSchema.$columns
+  @column()
+  declare awayScore: number | null
+  @column()
+  declare awayTeamId: number
+  @column()
+  declare awayTeamName: string
+  @column()
+  declare country: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare eventId: number
+  @column()
+  declare homeScore: number | null
+  @column()
+  declare homeTeamId: number
+  @column()
+  declare homeTeamName: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column.date()
+  declare matchDate: DateTime
+  @column()
+  declare payload: any
+  @column()
+  declare round: string | null
+  @column.dateTime()
+  declare startsAt: DateTime | null
+  @column()
+  declare status: string | null
+  @column()
+  declare tournamentId: number | null
+  @column()
+  declare tournamentName: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare winnerCode: number | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'isPremium', 'password', 'role', 'updatedAt'] as const
   $columns = UserSchema.$columns

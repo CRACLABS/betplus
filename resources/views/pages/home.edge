@@ -251,41 +251,33 @@
 
       <section class="widget">
         <div class="widget-title">
-          <h3>Événements à venir</h3>
+          <h3>Matchs du jour</h3>
           <a href="#">Agenda</a>
         </div>
-        <div class="event-item">
-          <div class="event-date"><div><b>21</b><span>Sep</span></div></div>
-          <div class="event-text">
-            <h4>Arsenal – Tottenham</h4>
-            <span>Premier League · 17:30</span>
+        @each(fixture in fixtures)
+          <div class="event-item">
+            <div class="event-date">
+              <div>
+                @if(fixture.isLive)
+                  <b class="live-dot">Live</b>
+                @elseif(fixture.startsAt)
+                  <b>{{ fixture.startsAt.toFormat('HH:mm') }}</b><span>UTC</span>
+                @else
+                  <b>–</b>
+                @end
+              </div>
+            </div>
+            <div class="event-text">
+              <h4>{{ fixture.homeTeamName }} – {{ fixture.awayTeamName }}</h4>
+              <span>{{ fixture.tournamentName ?? '' }}{{ fixture.country ? ' · ' + fixture.country : '' }}</span>
+            </div>
+            @if(fixture.hasScore)
+              <span class="event-odd">{{ fixture.homeScore }}-{{ fixture.awayScore }}</span>
+            @end
           </div>
-          <span class="event-odd">2.15</span>
-        </div>
-        <div class="event-item">
-          <div class="event-date"><div><b>21</b><span>Sep</span></div></div>
-          <div class="event-text">
-            <h4>Inter – AC Milan</h4>
-            <span>Serie A · 20:45</span>
-          </div>
-          <span class="event-odd">2.60</span>
-        </div>
-        <div class="event-item">
-          <div class="event-date"><div><b>22</b><span>Sep</span></div></div>
-          <div class="event-text">
-            <h4>Lakers – Warriors</h4>
-            <span>NBA · 04:00</span>
-          </div>
-          <span class="event-odd">1.88</span>
-        </div>
-        <div class="event-item">
-          <div class="event-date"><div><b>23</b><span>Sep</span></div></div>
-          <div class="event-text">
-            <h4>Munoz – Alcaraz</h4>
-            <span>ATP 500 · 14:00</span>
-          </div>
-          <span class="event-odd">1.22</span>
-        </div>
+        @else
+          <p class="empty-state">Aucun match synchronisé pour aujourd'hui.</p>
+        @end
       </section>
     </aside>
 

@@ -13,7 +13,7 @@ import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/gate', { tab: 'login' }).as('gate').use(middleware.guest())
 
-router.on('/feed').render('pages/home').as('home').use(middleware.auth())
+router.get('/feed', [controllers.Feed, 'show']).as('home').use(middleware.auth())
 
 router
   .post('/premium/subscribe', async ({ auth, response, session }) => {

@@ -14,6 +14,7 @@ export type ScannedRoutes = {
     'alerts': { paramsTuple?: []; params?: {} }
     'account.profile': { paramsTuple?: []; params?: {} }
     'settings.show': { paramsTuple?: [ParamValue?]; params?: {'section'?: ParamValue} }
+    'settings.preferences': { paramsTuple?: []; params?: {} }
     'settings.profile': { paramsTuple?: []; params?: {} }
     'settings.email': { paramsTuple?: []; params?: {} }
     'settings.password': { paramsTuple?: []; params?: {} }
@@ -54,6 +55,7 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'settings.preferences': { paramsTuple?: []; params?: {} }
     'settings.profile': { paramsTuple?: []; params?: {} }
     'settings.email': { paramsTuple?: []; params?: {} }
     'settings.password': { paramsTuple?: []; params?: {} }

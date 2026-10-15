@@ -68,7 +68,7 @@ export class FixtureSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['bio', 'createdAt', 'email', 'favoriteSport', 'fullName', 'id', 'isPremium', 'password', 'role', 'updatedAt', 'username'] as const
+  static $columns = ['bio', 'createdAt', 'email', 'favoriteSport', 'fullName', 'id', 'isPremium', 'password', 'preferences', 'role', 'updatedAt', 'username'] as const
   $columns = UserSchema.$columns
   @column()
   declare bio: string | null
@@ -86,6 +86,8 @@ export class UserSchema extends BaseModel {
   declare isPremium: boolean
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare preferences: any | null
   @column()
   declare role: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })

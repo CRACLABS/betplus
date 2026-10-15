@@ -26,6 +26,9 @@ router
 
     router.get('moi', [controllers.Account, 'show']).as('account.profile')
     router.get('parametres/:section?', [controllers.Settings, 'show']).as('settings.show')
+    router
+      .post('parametres/preferences', [controllers.Settings, 'updatePreferences'])
+      .as('settings.preferences')
     router.post('parametres/profil', [controllers.Settings, 'updateProfile']).as('settings.profile')
     router.post('parametres/compte', [controllers.Settings, 'updateEmail']).as('settings.email')
     router

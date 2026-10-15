@@ -260,8 +260,8 @@
               <div>
                 @if(fixture.isLive)
                   <b class="event-live">LIVE</b>
-                @elseif(fixture.kickoff)
-                  <b>{{ fixture.kickoff }}</b>
+                @elseif(fixture.startsAt)
+                  <b>{{ fixture.kickoffIn(auth.user.prefs.timezone) }}</b>
                 @else
                   <b>–</b>
                 @end

@@ -3,13 +3,14 @@
     <div class="section-head">
       <div>
         <h1>Paramètres</h1>
-        <p>Gère ton profil public, ton compte et ton abonnement.</p>
+        <p>Personnalise l'affichage, ton profil, ton compte et ton abonnement.</p>
       </div>
       <a href="/moi" class="btn btn-ghost">Voir mon profil</a>
     </div>
 
     <div class="settings-layout">
       <nav class="settings-nav">
+        <a href="/parametres" class="{{ section === 'preferences' ? 'active' : '' }}">Préférences</a>
         <a href="/parametres/profil" class="{{ section === 'profil' ? 'active' : '' }}">Profil</a>
         <a href="/parametres/compte" class="{{ section === 'compte' ? 'active' : '' }}">Compte</a>
         <a href="/parametres/securite" class="{{ section === 'securite' ? 'active' : '' }}">Sécurité</a>
@@ -17,7 +18,117 @@
       </nav>
 
       <div>
-        @if(section === 'profil')
+        @if(section === 'preferences')
+          @let(p = user.prefs)
+          @form({
+            route: 'settings.preferences',
+            method: 'POST',
+            class: 'prefs-form',
+            'x-data': '{}',
+          })
+            <section class="settings-card">
+              <h2>Apparence</h2>
+              <p>Les changements s'affichent tout de suite ; enregistre pour les garder.</p>
+
+              <div class="pref-block">
+                <span class="pref-label">Thème</span>
+                <div class="choice-row">
+                  @each((label, value) in options.theme)
+                    <label class="choice-card theme-{{ value }}">
+                      <input type="radio" name="theme" value="{{ value }}" {{ p.theme === value ? 'checked' : '' }}
+                        x-on:change="localStorage.removeItem('betplus-theme'); document.documentElement.dataset.theme = $el.value === 'system' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : $el.value" />
+                      <span class="theme-preview"><i></i><i></i></span>
+                      <span>{{ label }}</span>
+                    </label>
+                  @end
+                </div>
+              </div>
+
+              <div class="pref-block">
+                <span class="pref-label">Couleur d'accent</span>
+                <div class="swatch-row">
+                  @each((label, value) in options.accent)
+                    <label class="swatch swatch-{{ value }}" title="{{ label }}">
+                      <input type="radio" name="accent" value="{{ value }}" {{ p.accent === value ? 'checked' : '' }}
+                        x-on:change="document.documentElement.dataset.accent = $el.value" />
+                      <span></span>
+                      <small>{{ label }}</small>
+                    </label>
+                  @end
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div>
+                  <label for="pref-font">Police</label>
+                  <select id="pref-font" name="font" x-on:change="document.documentElement.dataset.font = $el.value">
+                    @each((label, value) in options.font)
+                      <option value="{{ value }}" {{ p.font === value ? 'selected' : '' }}>{{ label }}</option>
+                    @end
+                  </select>
+                </div>
+                <div>
+                  <label for="pref-size">Taille du texte</label>
+                  <select id="pref-size" name="textSize" x-on:change="document.documentElement.dataset.size = $el.value">
+                    @each((label, value) in options.textSize)
+                      <option value="{{ value }}" {{ p.textSize === value ? 'selected' : '' }}>{{ label }}</option>
+                    @end
+                  </select>
+                </div>
+              </div>
+
+              <label class="toggle-line">
+                <input type="checkbox" name="reduceMotion" value="true" {{ p.reduceMotion ? 'checked' : '' }}
+                  x-on:change="document.documentElement.dataset.motion = $el.checked ? 'reduced' : 'normal'" />
+                <span>
+                  <b>Réduire les animations</b>
+                  <small>Coupe les clignotements et transitions (point « En direct », menus).</small>
+                </span>
+              </label>
+            </section>
+
+            <section class="settings-card">
+              <h2>Langue et région</h2>
+              <p>L'heure des matchs s'affiche dans le fuseau choisi.</p>
+              <div class="form-row">
+                <div>
+                  <label for="pref-language">Langue</label>
+                  <select id="pref-language" name="language">
+                    @each((label, value) in options.language)
+                      <option value="{{ value }}" {{ p.language === value ? 'selected' : '' }} {{ value !== 'fr' ? 'disabled' : '' }}>{{ label }}</option>
+                    @end
+                  </select>
+                </div>
+                <div>
+                  <label for="pref-timezone">Fuseau horaire</label>
+                  <select id="pref-timezone" name="timezone">
+                    @each((label, value) in options.timezone)
+                      <option value="{{ value }}" {{ p.timezone === value ? 'selected' : '' }}>{{ label }}</option>
+                    @end
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="settings-card">
+              <h2>Paris</h2>
+              <p>Comment les cotes des pronostics sont affichées.</p>
+              <div class="choice-row">
+                @each((label, value) in options.oddsFormat)
+                  <label class="choice-card">
+                    <input type="radio" name="oddsFormat" value="{{ value }}" {{ p.oddsFormat === value ? 'checked' : '' }} />
+                    <span class="odds-sample">{{ formatOdds(2.4, value) }}</span>
+                    <span>{{ label.split(' (')[0] }}</span>
+                  </label>
+                @end
+              </div>
+            </section>
+
+            <div class="prefs-actions">
+              <button type="submit">Enregistrer les préférences</button>
+            </div>
+          @end
+        @elseif(section === 'profil')
           <section class="settings-card">
             <h2>Profil public</h2>
             <p>Ce que les autres membres voient sur ta page.</p>

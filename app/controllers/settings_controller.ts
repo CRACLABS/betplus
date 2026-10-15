@@ -1,17 +1,38 @@
 import type User from '#models/user'
-import { emailValidator, passwordValidator, profileValidator } from '#validators/user'
+import {
+  emailValidator,
+  passwordValidator,
+  preferencesValidator,
+  profileValidator,
+} from '#validators/user'
+import { PREFERENCE_OPTIONS } from '#services/preferences'
 import hash from '@adonisjs/core/services/hash'
 import type { HttpContext } from '@adonisjs/core/http'
 
-const SECTIONS = ['profil', 'compte', 'securite', 'abonnement'] as const
+const SECTIONS = ['preferences', 'profil', 'compte', 'securite', 'abonnement'] as const
 
 /**
  * Paramètres: profile, account (email), security (password) and subscription.
  */
 export default class SettingsController {
   async show({ view, auth, params }: HttpContext) {
-    const section = SECTIONS.includes(params.section) ? params.section : 'profil'
-    return view.render('pages/parametres', { user: auth.user!, section })
+    const section = SECTIONS.includes(params.section) ? params.section : 'preferences'
+    return view.render('pages/parametres', {
+      user: auth.user!,
+      section,
+      options: PREFERENCE_OPTIONS,
+    })
+  }
+
+  async updatePreferences({ request, response, auth, session }: HttpContext) {
+    const user = auth.user!
+    const payload = await request.validateUsing(preferencesValidator)
+    user.preferences = { ...payload, reduceMotion: payload.reduceMotion === true }
+    await user.save()
+    // Lets the page drop the theme picked with the quick toggle in the top bar.
+    session.flash('preferencesSaved', true)
+    session.flash('success', 'Préférences enregistrées')
+    return response.redirect().toRoute('settings.show', { section: 'preferences' })
   }
 
   async updateProfile({ request, response, auth, session }: HttpContext) {

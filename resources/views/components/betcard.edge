@@ -51,7 +51,7 @@
         <div class="confidence-bar"><i style="width:{{ pick.confidence }}%"></i></div>
         <span>{{ pick.confidence }}%</span>
       </div>
-      <span class="cote">{{ pick.cote }}</span>
+      <span class="cote">{{ formatOdds(pick.cote, auth?.user?.prefs.oddsFormat) }}</span>
       @if(pick.status === 'won')
         <span class="status-chip status-won">Gagné</span>
       @elseif(pick.status === 'lost')

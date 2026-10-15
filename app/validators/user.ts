@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { PREFERENCE_OPTIONS } from '#services/preferences'
 
 /**
  * Shared rules for email and password.
@@ -63,4 +64,21 @@ export const emailValidator = vine.withMetaData<{ userId: number }>().create({
 export const passwordValidator = vine.create({
   currentPassword: vine.string(),
   password: password().confirmed({ confirmationField: 'passwordConfirmation' }),
+})
+
+const choice = <K extends keyof typeof PREFERENCE_OPTIONS>(key: K) =>
+  vine.enum(Object.keys(PREFERENCE_OPTIONS[key]) as (keyof (typeof PREFERENCE_OPTIONS)[K])[])
+
+/**
+ * Paramètres > Préférences.
+ */
+export const preferencesValidator = vine.create({
+  theme: choice('theme'),
+  accent: choice('accent'),
+  font: choice('font'),
+  textSize: choice('textSize'),
+  language: vine.enum(['fr']),
+  oddsFormat: choice('oddsFormat'),
+  timezone: choice('timezone'),
+  reduceMotion: vine.boolean().optional(),
 })

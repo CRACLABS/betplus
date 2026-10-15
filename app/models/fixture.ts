@@ -53,7 +53,14 @@ export default class Fixture extends FixtureSchema {
    * Kick-off time shown to users, in French time.
    */
   get kickoff() {
-    return this.startsAt ? this.startsAt.setZone('Europe/Paris').toFormat('HH:mm') : null
+    return this.kickoffIn('Europe/Paris')
+  }
+
+  /**
+   * Kick-off time in the member's time zone (Paramètres > Préférences).
+   */
+  kickoffIn(timezone: string) {
+    return this.startsAt ? this.startsAt.setZone(timezone).toFormat('HH:mm') : null
   }
 
   get statusLabel() {

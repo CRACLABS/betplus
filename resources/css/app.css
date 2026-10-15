@@ -2683,3 +2683,174 @@ form.user-dropdown-form button[type='submit']:hover {
     right: 12px;
   }
 }
+
+/* ===================== Préférences (accent, font, size, motion) ===================== */
+html[data-accent='bleu'] { --green: #4d9fff; --green-deep: #2f7fe0; --green-soft: rgba(77, 159, 255, 0.13); }
+html[data-accent='violet'] { --green: #a78bfa; --green-deep: #8b6cf0; --green-soft: rgba(167, 139, 250, 0.14); }
+html[data-accent='orange'] { --green: #ff9f43; --green-deep: #e9822a; --green-soft: rgba(255, 159, 67, 0.13); }
+html[data-accent='rose'] { --green: #ff6b9a; --green-deep: #e54d7f; --green-soft: rgba(255, 107, 154, 0.13); }
+html[data-theme='light'][data-accent='bleu'] { --green: #1b6fd6; --green-deep: #155bb0; --green-soft: rgba(27, 111, 214, 0.1); }
+html[data-theme='light'][data-accent='violet'] { --green: #7c4ddb; --green-deep: #6537c4; --green-soft: rgba(124, 77, 219, 0.1); }
+html[data-theme='light'][data-accent='orange'] { --green: #d4690f; --green-deep: #b5570a; --green-soft: rgba(212, 105, 15, 0.1); }
+html[data-theme='light'][data-accent='rose'] { --green: #d6336c; --green-deep: #b82659; --green-soft: rgba(214, 51, 108, 0.1); }
+
+html[data-font='systeme'] {
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+html[data-font='lisible'] {
+  --font-ui: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+}
+html[data-size='grand'] body {
+  zoom: 1.08;
+}
+html[data-size='tres_grand'] body {
+  zoom: 1.16;
+}
+html[data-motion='reduced'] *,
+html[data-motion='reduced'] *::before,
+html[data-motion='reduced'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.user-dropdown .user-dropdown-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+form.prefs-form {
+  max-width: none;
+  gap: 0;
+}
+.pref-block {
+  margin-bottom: 18px;
+}
+.pref-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.choice-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.settings-card .choice-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  margin: 0;
+}
+.choice-card input,
+.swatch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.choice-card:has(input:checked) {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}
+.choice-card:has(input:focus-visible),
+.swatch:has(input:focus-visible) span {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.theme-preview {
+  width: 100%;
+  height: 46px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.theme-dark .theme-preview i { background: #0a0d10; }
+.theme-dark .theme-preview i + i { background: #161b21; }
+.theme-light .theme-preview i { background: #f3f5f7; }
+.theme-light .theme-preview i + i { background: #ffffff; }
+.theme-system .theme-preview i { background: #0a0d10; }
+.theme-system .theme-preview i + i { background: #f3f5f7; }
+.odds-sample {
+  font-family: var(--font-data);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
+}
+.swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.settings-card .swatch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin: 0;
+}
+.swatch span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+.swatch input:checked + span {
+  box-shadow: 0 0 0 2px var(--text);
+}
+.swatch small {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+.swatch-vert span { background: #1fd67a; }
+.swatch-bleu span { background: #4d9fff; }
+.swatch-violet span { background: #a78bfa; }
+.swatch-orange span { background: #ff9f43; }
+.swatch-rose span { background: #ff6b9a; }
+.settings-card .toggle-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0 0;
+  cursor: pointer;
+}
+.toggle-line input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--green);
+  flex: none;
+}
+.toggle-line b {
+  display: block;
+  font-size: 13.5px;
+}
+.toggle-line small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+.prefs-actions {
+  margin-top: 16px;
+}
+.settings-card .form-row + .form-row {
+  margin-top: 14px;
+}
+@media (max-width: 640px) {
+  .choice-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,6 +2,7 @@ import { UserSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
+import { PREFERENCE_OPTIONS, resolvePreferences } from '#services/preferences'
 
 /**
  * User model represents a user in the application.
@@ -41,5 +42,16 @@ export default class User extends compose(UserSchema, withAuthFinder(hash)) {
 
   get roleLabel() {
     return this.role === 'tipster' ? 'Pronostiqueur' : 'Parieur'
+  }
+
+  /**
+   * Display preferences with defaults filled in (Paramètres > Préférences).
+   */
+  get prefs() {
+    return resolvePreferences(this.preferences)
+  }
+
+  get timezoneLabel() {
+    return PREFERENCE_OPTIONS.timezone[this.prefs.timezone].split(' (')[0]
   }
 }

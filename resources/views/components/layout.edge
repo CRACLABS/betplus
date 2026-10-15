@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+@let(prefs = auth?.user ? auth.user.prefs : null)
+<html
+  lang="fr"
+  data-theme="dark"
+  data-accent="{{ prefs ? prefs.accent : 'vert' }}"
+  data-font="{{ prefs ? prefs.font : 'sora' }}"
+  data-size="{{ prefs ? prefs.textSize : 'normal' }}"
+  data-motion="{{ prefs && prefs.reduceMotion ? 'reduced' : 'normal' }}"
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title ?? 'BetPlus — Le réseau social des pronostics' }}</title>
     <meta name="description" content="BetPlus — suivez les meilleurs pronostiqueurs, publiez vos pronostics et rejoignez la communauté." />
     <script>
-      document.documentElement.dataset.theme = localStorage.getItem('betplus-theme') || 'dark'
+      (function () {
+        // Saved preference from Paramètres; the top-bar toggle overrides it until the next save.
+        var saved = '{{ prefs ? prefs.theme : '' }}'
+        try {
+          if ({{ flashMessages.has('preferencesSaved') ? 'true' : 'false' }}) localStorage.removeItem('betplus-theme')
+          var theme = localStorage.getItem('betplus-theme') || saved || 'dark'
+        } catch (e) {
+          var theme = saved || 'dark'
+        }
+        if (theme === 'system') {
+          theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = theme
+      })()
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')

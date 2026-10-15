@@ -3,7 +3,7 @@
     <div class="section-head">
       <div>
         <h1>{{ day.title }}</h1>
-        <p>{{ total }} matchs de football{{ day.isToday ? " aujourd'hui" : '' }}, heures de Paris.</p>
+        <p>{{ total }} matchs de football{{ day.isToday ? " aujourd'hui" : '' }}, heure : {{ auth.user.timezoneLabel }}.</p>
       </div>
       <form class="day-nav" method="get" action="/evenements">
         @if(filter !== 'tous')
@@ -50,7 +50,7 @@
           @each(match in competition.matches)
             <div class="fx-row {{ match.isLive ? 'is-live' : '' }}">
               <div class="fx-time">
-                <b>{{ match.kickoff ?? '–' }}</b>
+                <b>{{ match.kickoffIn(auth.user.prefs.timezone) ?? '–' }}</b>
                 <span class="fx-status fx-{{ match.isLive ? 'live' : (match.isFinished ? 'done' : 'next') }}">{{ match.statusLabel }}</span>
               </div>
               <div class="fx-teams">

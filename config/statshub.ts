@@ -10,6 +10,12 @@ const statshubConfig = {
   baseUrl: env.get('PARSE_API_URL', 'https://api.parse.bot'),
   scraperId: env.get('STATSHUB_SCRAPER_ID', 'e1f0e079-0946-4b6c-9e3c-9227eddaa64a'),
   timeoutMs: 30_000,
+  /**
+   * Team and competition logos. StatsHub ids are the same as SofaScore's, so
+   * `node ace statshub:sync-logos` downloads the images from its image server
+   * once into public/logos/ (no Parse credits spent).
+   */
+  logoBaseUrl: env.get('LOGO_BASE_URL', 'https://img.sofascore.com/api/v1'),
 }
 
 export default statshubConfig

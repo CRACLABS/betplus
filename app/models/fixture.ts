@@ -1,4 +1,5 @@
 import { FixtureSchema } from '#database/schema'
+import LogoStore from '#services/logo_store'
 import type { StatsHubFixture } from '#services/statshub_client'
 import { DateTime } from 'luxon'
 
@@ -46,5 +47,24 @@ export default class Fixture extends FixtureSchema {
 
   get isFinished() {
     return this.status === 'finished'
+  }
+
+  /**
+   * Competition id used for logos (the "unique" tournament, e.g. MLS = 242).
+   */
+  get uniqueTournamentId(): number | null {
+    return this.payload?.tournament?.unique_id ?? this.tournamentId ?? null
+  }
+
+  get homeLogo() {
+    return LogoStore.url('teams', this.homeTeamId)
+  }
+
+  get awayLogo() {
+    return LogoStore.url('teams', this.awayTeamId)
+  }
+
+  get tournamentLogo() {
+    return LogoStore.url('tournaments', this.uniqueTournamentId)
   }
 }

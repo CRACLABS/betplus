@@ -15,7 +15,10 @@
     @if(competitions.length)
       <div class="list-card">
         @each(competition in competitions)
-          <div class="group-head">{{ competition.name }}</div>
+          <div class="group-head">
+            @!crest({ src: competition.logo, name: competition.name, class: 'crest-sm' })
+            <span>{{ competition.name }}</span>
+          </div>
           @each(match in competition.matches)
             <div class="list-row">
               <div class="event-date">
@@ -30,11 +33,18 @@
                 </div>
               </div>
               <div class="list-main">
-                <h4>{{ match.homeTeamName }} – {{ match.awayTeamName }}</h4>
-                <p>{{ match.isFinished ? 'Terminé' : (match.isLive ? 'En cours' : 'À venir') }}</p>
+                <div class="team-line">
+                  @!crest({ src: match.homeLogo, name: match.homeTeamName })
+                  <h4>{{ match.homeTeamName }}</h4>
+                </div>
+                <div class="team-line">
+                  @!crest({ src: match.awayLogo, name: match.awayTeamName })
+                  <h4>{{ match.awayTeamName }}</h4>
+                </div>
               </div>
-              @if(match.hasScore && !(match.status === 'notstarted'))
-                <span class="score-box">{{ match.homeScore }} - {{ match.awayScore }}</span>
+              <span class="match-state">{{ match.isFinished ? 'Terminé' : (match.isLive ? 'En cours' : 'À venir') }}</span>
+              @if(match.hasScore && match.status !== 'notstarted')
+                <span class="score-stack"><b>{{ match.homeScore }}</b><b>{{ match.awayScore }}</b></span>
               @end
             </div>
           @end

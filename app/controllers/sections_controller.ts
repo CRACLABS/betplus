@@ -362,7 +362,11 @@ export default class SectionsController {
     }
 
     return view.render('pages/evenements', {
-      competitions: [...competitions.entries()].map(([name, matches]) => ({ name, matches })),
+      competitions: [...competitions.entries()].map(([name, matches]) => ({
+        name,
+        matches,
+        logo: matches[0].tournamentLogo,
+      })),
       total: fixtures.length,
       filter,
     })

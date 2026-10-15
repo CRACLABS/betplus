@@ -1,0 +1,6 @@
+{{-- Team or competition logo, with the name's initials when no logo was downloaded yet. --}}
+@if($props.get('src'))
+  <img class="crest {{ $props.get('class') ?? '' }}" src="{{ $props.get('src') }}" alt="" loading="lazy" />
+@else
+  <span class="crest crest-fallback {{ $props.get('class') ?? '' }}">{{ ($props.get('name') ?? '?').replace(/[^\p{L}\p{N} ]/gu, '').split(' ').filter((w) => w).slice(0, 2).map((w) => w[0]).join('').toUpperCase() }}</span>
+@end

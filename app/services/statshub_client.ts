@@ -25,7 +25,7 @@ export type FixturesByDateResponse = {
   fixtures: StatsHubFixture[]
 }
 
-type Options = typeof statshubConfig & { fetch?: typeof fetch }
+type Options = Omit<typeof statshubConfig, 'logoBaseUrl'> & { fetch?: typeof fetch }
 
 /**
  * Thin client for the "statshub.com API" hosted on Parse.

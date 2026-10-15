@@ -26,6 +26,13 @@ export default class StatshubSyncFixtures extends BaseCommand {
   @flags.boolean({ description: 'Save the raw API response to tmp/ for debugging' })
   declare raw: boolean
 
+  @flags.boolean({
+    description: 'Download missing team and competition logos afterwards (free)',
+    default: true,
+    showNegatedVariantInHelp: true,
+  })
+  declare logos: boolean
+
   async run() {
     const { default: StatsHubClient } = await import('#services/statshub_client')
     const { default: Fixture } = await import('#models/fixture')
@@ -84,6 +91,10 @@ export default class StatshubSyncFixtures extends BaseCommand {
         ])
       }
       table.render()
+    }
+
+    if (this.logos) {
+      await this.kernel.exec('statshub:sync-logos', [])
     }
   }
 }

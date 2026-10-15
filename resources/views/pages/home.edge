@@ -268,11 +268,21 @@
               </div>
             </div>
             <div class="event-text">
-              <h4>{{ fixture.homeTeamName }} – {{ fixture.awayTeamName }}</h4>
-              <span>{{ fixture.tournamentName ?? '' }}{{ fixture.country ? ' · ' + fixture.country : '' }}</span>
+              <div class="team-line">
+                @!crest({ src: fixture.homeLogo, name: fixture.homeTeamName })
+                <h4>{{ fixture.homeTeamName }}</h4>
+              </div>
+              <div class="team-line">
+                @!crest({ src: fixture.awayLogo, name: fixture.awayTeamName })
+                <h4>{{ fixture.awayTeamName }}</h4>
+              </div>
+              <span class="competition-line">
+                @!crest({ src: fixture.tournamentLogo, name: fixture.tournamentName, class: 'crest-xs' })
+                {{ fixture.tournamentName ?? '' }}{{ fixture.country ? ' · ' + fixture.country : '' }}
+              </span>
             </div>
-            @if(fixture.hasScore)
-              <span class="event-odd">{{ fixture.homeScore }}-{{ fixture.awayScore }}</span>
+            @if(fixture.hasScore && fixture.status !== 'notstarted')
+              <span class="score-stack"><b>{{ fixture.homeScore }}</b><b>{{ fixture.awayScore }}</b></span>
             @end
           </div>
         @else

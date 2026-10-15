@@ -2055,3 +2055,74 @@ a.chip.active {
   min-width: 96px;
   text-align: center;
 }
+
+/* Team and competition logos */
+.crest {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  object-fit: contain;
+  display: inline-grid;
+  place-items: center;
+}
+.crest-sm {
+  width: 18px;
+  height: 18px;
+}
+.crest-xs {
+  width: 14px;
+  height: 14px;
+}
+.crest-fallback {
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+.crest-xs.crest-fallback {
+  font-size: 6px;
+}
+.team-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.team-line + .team-line {
+  margin-top: 4px;
+}
+.team-line h4 {
+  margin: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.competition-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+.group-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.score-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-data);
+  font-size: 13px;
+  text-align: center;
+  min-width: 22px;
+}
+.match-state {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}

@@ -44,9 +44,14 @@ export default class StatsHubClient {
   /**
    * Raw GET on any StatsHub endpoint.
    */
-  async get<T = unknown>(endpoint: string, query: Record<string, string | number> = {}): Promise<T> {
+  async get<T = unknown>(
+    endpoint: string,
+    query: Record<string, string | number> = {}
+  ): Promise<T> {
     if (!this.options.apiKey) {
-      throw new StatsHubException('PARSE_API_KEY is not set. Add it to your .env file.', { status: 0 })
+      throw new StatsHubException('PARSE_API_KEY is not set. Add it to your .env file.', {
+        status: 0,
+      })
     }
 
     const url = new URL(
@@ -64,10 +69,13 @@ export default class StatsHubClient {
         signal: AbortSignal.timeout(this.options.timeoutMs),
       })
     } catch (error) {
-      throw new StatsHubException(`Could not reach Parse (${endpoint}): ${(error as Error).message}`, {
-        status: 0,
-        cause: error,
-      })
+      throw new StatsHubException(
+        `Could not reach Parse (${endpoint}): ${(error as Error).message}`,
+        {
+          status: 0,
+          cause: error,
+        }
+      )
     }
 
     if (!response.ok) {

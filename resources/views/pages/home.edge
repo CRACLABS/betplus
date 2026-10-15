@@ -259,7 +259,7 @@
             <div class="event-date">
               <div>
                 @if(fixture.isLive)
-                  <b class="live-dot">Live</b>
+                  <b class="event-live">LIVE</b>
                 @elseif(fixture.startsAt)
                   <b>{{ fixture.startsAt.toFormat('HH:mm') }}</b><span>UTC</span>
                 @else

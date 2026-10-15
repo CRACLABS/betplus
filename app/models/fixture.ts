@@ -47,5 +47,4 @@ export default class Fixture extends FixtureSchema {
   get isFinished() {
     return this.status === 'finished'
   }
-
 }

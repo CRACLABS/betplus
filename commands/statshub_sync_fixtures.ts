@@ -10,10 +10,16 @@ export default class StatshubSyncFixtures extends BaseCommand {
     startApp: true,
   }
 
-  @args.string({ description: 'First day to fetch (YYYY-MM-DD), defaults to today UTC', required: false })
+  @args.string({
+    description: 'First day to fetch (YYYY-MM-DD), defaults to today UTC',
+    required: false,
+  })
   declare date?: string
 
-  @flags.number({ description: 'How many consecutive days to fetch (1 credit per day)', default: 1 })
+  @flags.number({
+    description: 'How many consecutive days to fetch (1 credit per day)',
+    default: 1,
+  })
   declare days: number
 
   async run() {
@@ -21,7 +27,9 @@ export default class StatshubSyncFixtures extends BaseCommand {
     const { default: Fixture } = await import('#models/fixture')
     const client = await this.app.container.make(StatsHubClient)
 
-    const start = this.date ? DateTime.fromISO(this.date, { zone: 'utc' }) : DateTime.utc().startOf('day')
+    const start = this.date
+      ? DateTime.fromISO(this.date, { zone: 'utc' })
+      : DateTime.utc().startOf('day')
     if (!start.isValid) {
       this.logger.error(`Invalid date "${this.date}", expected YYYY-MM-DD`)
       this.exitCode = 1
@@ -33,26 +41,35 @@ export default class StatshubSyncFixtures extends BaseCommand {
 
       let fixtures
       try {
-        fixtures = (await client.fixturesByDate(date)).fixtures ?? []
+        const response = await client.fixturesByDate(date)
+        fixtures = response.fixtures ?? []
       } catch (error) {
         this.logger.error((error as Error).message)
         this.exitCode = 1
         return
       }
 
-      fixtures = fixtures.filter((fixture) => fixture.event_id && fixture.home_team && fixture.away_team)
+      fixtures = fixtures.filter(
+        (fixture) => fixture.event_id && fixture.home_team && fixture.away_team
+      )
       for (const fixture of fixtures) {
         await Fixture.upsertFromApi(fixture, date)
       }
 
       this.logger.success(`${date}: ${fixtures.length} fixtures saved`)
-      const table = this.ui.table().head(['Kick-off (UTC)', 'Competition', 'Match', 'Score', 'Status'])
+      const table = this.ui
+        .table()
+        .head(['Kick-off (UTC)', 'Competition', 'Match', 'Score', 'Status'])
       for (const fixture of fixtures.slice(0, 10)) {
         table.row([
-          fixture.start_timestamp ? DateTime.fromSeconds(fixture.start_timestamp, { zone: 'utc' }).toFormat('HH:mm') : '',
+          fixture.start_timestamp
+            ? DateTime.fromSeconds(fixture.start_timestamp, { zone: 'utc' }).toFormat('HH:mm')
+            : '',
           fixture.tournament?.name ?? '',
           `${fixture.home_team.name} - ${fixture.away_team.name}`,
-          fixture.home_score !== null && fixture.home_score !== undefined ? `${fixture.home_score}-${fixture.away_score}` : '',
+          fixture.home_score !== null && fixture.home_score !== undefined
+            ? `${fixture.home_score}-${fixture.away_score}`
+            : '',
           fixture.status ?? '',
         ])
       }

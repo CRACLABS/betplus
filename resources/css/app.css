@@ -1866,3 +1866,7 @@ html[data-theme='light'] .auth-tabs button.active {
   color: var(--text-3);
   padding: 6px 0;
 }
+.event-date .event-live {
+  font-size: 10px;
+  color: var(--red);
+}

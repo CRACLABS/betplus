@@ -18,7 +18,10 @@ export default class StatsHubException extends Exception {
       // Parse errors are {"error": "reason"} or {"error": {"status", "message", ...}}; a wrong path is {"detail": ...}
       const json = JSON.parse(body)
       const error = json.error ?? json.detail
-      detail = typeof error === 'object' && error !== null ? (error.message ?? error.status ?? body) : (error ?? body)
+      detail =
+        typeof error === 'object' && error !== null
+          ? (error.message ?? error.status ?? body)
+          : (error ?? body)
     } catch {}
 
     const exception = new StatsHubException(

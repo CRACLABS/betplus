@@ -1,0 +1,30 @@
+@layout({ title: 'BetPlus — Groupes' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Groupes</h1>
+        <p>Discute des matchs avec les parieurs qui suivent les mêmes championnats que toi.</p>
+      </div>
+      <a href="#" class="btn btn-primary">Créer un groupe</a>
+    </div>
+    <div class="tile-grid">
+      @each(group in groups)
+        <article class="tile">
+          <div class="tile-top">
+            <div class="sug-tile" style="background:{{ group.bg }};color:{{ group.color }}">{{ group.initials }}</div>
+            <div>
+              <h3>{{ group.name }}</h3>
+              <span class="muted">{{ group.members }} membres</span>
+            </div>
+          </div>
+          <p>{{ group.description }}</p>
+          <div class="tile-foot">
+            <span class="muted">{{ group.posts }} messages aujourd'hui</span>
+            <button class="btn-follow">Rejoindre</button>
+          </div>
+        </article>
+      @end
+    </div>
+    <p class="placeholder-note">Groupes de démonstration.</p>
+  </div>
+@end

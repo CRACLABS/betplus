@@ -1,0 +1,47 @@
+@layout({ title: 'BetPlus — Événements' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Matchs du jour</h1>
+        <p>{{ total }} matchs de football aujourd'hui, mis à jour par la synchronisation StatsHub.</p>
+      </div>
+    </div>
+    <div class="chip-row">
+      <a href="/evenements" class="chip {{ filter === 'tous' ? 'active' : '' }}">Tous</a>
+      <a href="/evenements?statut=live" class="chip {{ filter === 'live' ? 'active' : '' }}">En direct</a>
+      <a href="/evenements?statut=a-venir" class="chip {{ filter === 'a-venir' ? 'active' : '' }}">À venir</a>
+      <a href="/evenements?statut=termines" class="chip {{ filter === 'termines' ? 'active' : '' }}">Terminés</a>
+    </div>
+    @if(competitions.length)
+      <div class="list-card">
+        @each(competition in competitions)
+          <div class="group-head">{{ competition.name }}</div>
+          @each(match in competition.matches)
+            <div class="list-row">
+              <div class="event-date">
+                <div>
+                  @if(match.isLive)
+                    <b class="event-live">LIVE</b>
+                  @elseif(match.startsAt)
+                    <b>{{ match.startsAt.toFormat('HH:mm') }}</b><span>UTC</span>
+                  @else
+                    <b>–</b>
+                  @end
+                </div>
+              </div>
+              <div class="list-main">
+                <h4>{{ match.homeTeamName }} – {{ match.awayTeamName }}</h4>
+                <p>{{ match.isFinished ? 'Terminé' : (match.isLive ? 'En cours' : 'À venir') }}</p>
+              </div>
+              @if(match.hasScore && !(match.status === 'notstarted'))
+                <span class="score-box">{{ match.homeScore }} - {{ match.awayScore }}</span>
+              @end
+            </div>
+          @end
+        @end
+      </div>
+    @else
+      <div class="list-card"><div class="list-row"><p class="muted">Aucun match pour ce filtre. Lance <code>node ace statshub:sync-fixtures</code> pour récupérer les matchs du jour.</p></div></div>
+    @end
+  </div>
+@end

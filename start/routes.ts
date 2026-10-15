@@ -16,6 +16,17 @@ router.on('/').render('pages/gate', { tab: 'login' }).as('gate').use(middleware.
 router.get('/feed', [controllers.Feed, 'show']).as('home').use(middleware.auth())
 
 router
+  .group(() => {
+    router.get('chaines', [controllers.Sections, 'channels']).as('channels')
+    router.get('groupes', [controllers.Sections, 'groups']).as('groups')
+    router.get('profils', [controllers.Sections, 'profiles']).as('profiles')
+    router.get('evenements', [controllers.Sections, 'events']).as('events')
+    router.get('messages', [controllers.Sections, 'messages']).as('messages')
+    router.get('alertes', [controllers.Sections, 'alerts']).as('alerts')
+  })
+  .use(middleware.auth())
+
+router
   .post('/premium/subscribe', async ({ auth, response, session }) => {
     // TODO: brancher un vrai paiement — pour l'instant on simule l'abonnement
     const user = auth.user!

@@ -1,0 +1,29 @@
+@layout({ title: 'BetPlus — Messages' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Messages</h1>
+        <p>Tes conversations avec les pronostiqueurs et tes groupes.</p>
+      </div>
+      <a href="#" class="btn btn-primary">Nouveau message</a>
+    </div>
+    <div class="list-card">
+      @each(conversation in conversations)
+        <a href="#" class="list-row {{ conversation.unread ? 'unread' : '' }}">
+          <div class="avatar {{ conversation.avatar }}" style="width:40px;height:40px;font-size:14px">{{ conversation.initials }}</div>
+          <div class="list-main">
+            <h4>{{ conversation.name }}</h4>
+            <p>{{ conversation.last }}</p>
+          </div>
+          <div class="list-meta">
+            {{ conversation.time }}<br />
+            @if(conversation.unread)
+              <span class="dot-unread"></span>
+            @end
+          </div>
+        </a>
+      @end
+    </div>
+    <p class="placeholder-note">Conversations de démonstration : la messagerie arrive bientôt.</p>
+  </div>
+@end

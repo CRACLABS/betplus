@@ -1,0 +1,37 @@
+@layout({ title: 'BetPlus — Alertes' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Alertes</h1>
+        <p>Résultats de pronos, nouveaux abonnés et matchs en direct.</p>
+      </div>
+      <a href="#" class="btn btn-ghost">Tout marquer comme lu</a>
+    </div>
+    <div class="list-card">
+      @each(alert in alerts)
+        <div class="list-row {{ alert.unread ? 'unread' : '' }}">
+          @if(alert.kind === 'win')
+            <span class="status-chip status-won">Gagné</span>
+          @elseif(alert.kind === 'lost')
+            <span class="status-chip status-lost">Perdu</span>
+          @elseif(alert.kind === 'live')
+            <span class="status-chip status-live">Live</span>
+          @else
+            <span class="status-chip status-neutral">{{ alert.title }}</span>
+          @end
+          <div class="list-main">
+            <h4>{{ alert.title }}</h4>
+            <p>{{ alert.text }}</p>
+          </div>
+          <div class="list-meta">
+            {{ alert.time }}<br />
+            @if(alert.unread)
+              <span class="dot-unread"></span>
+            @end
+          </div>
+        </div>
+      @end
+    </div>
+    <p class="placeholder-note">Alertes de démonstration.</p>
+  </div>
+@end

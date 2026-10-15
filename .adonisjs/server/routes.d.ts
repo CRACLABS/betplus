@@ -6,6 +6,12 @@ export type ScannedRoutes = {
   ALL: {
     'gate': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
+    'channels': { paramsTuple?: []; params?: {} }
+    'groups': { paramsTuple?: []; params?: {} }
+    'profiles': { paramsTuple?: []; params?: {} }
+    'events': { paramsTuple?: []; params?: {} }
+    'messages': { paramsTuple?: []; params?: {} }
+    'alerts': { paramsTuple?: []; params?: {} }
     'premium.subscribe': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -16,12 +22,24 @@ export type ScannedRoutes = {
   GET: {
     'gate': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
+    'channels': { paramsTuple?: []; params?: {} }
+    'groups': { paramsTuple?: []; params?: {} }
+    'profiles': { paramsTuple?: []; params?: {} }
+    'events': { paramsTuple?: []; params?: {} }
+    'messages': { paramsTuple?: []; params?: {} }
+    'alerts': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'gate': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
+    'channels': { paramsTuple?: []; params?: {} }
+    'groups': { paramsTuple?: []; params?: {} }
+    'profiles': { paramsTuple?: []; params?: {} }
+    'events': { paramsTuple?: []; params?: {} }
+    'messages': { paramsTuple?: []; params?: {} }
+    'alerts': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }

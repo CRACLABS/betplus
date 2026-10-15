@@ -1,0 +1,45 @@
+@layout({ title: 'BetPlus — Chaînes' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Chaînes</h1>
+        <p>Abonne-toi aux chaînes des meilleurs pronostiqueurs pour recevoir leurs pronos en premier.</p>
+      </div>
+      <a href="#" class="btn btn-primary">Créer ma chaîne</a>
+    </div>
+    <div class="chip-row">
+      <span class="chip active">Toutes</span>
+      <span class="chip">Football</span>
+      <span class="chip">Tennis</span>
+      <span class="chip">Basket</span>
+      <span class="chip">Rugby</span>
+      <span class="chip">Premium</span>
+    </div>
+    <div class="tile-grid">
+      @each(channel in channels)
+        <article class="tile">
+          <div class="tile-top">
+            <div class="sug-tile" style="background:{{ channel.bg }};color:{{ channel.color }}">{{ channel.initials }}</div>
+            <div>
+              <h3>{{ channel.name }}</h3>
+              @if(channel.premium)
+                <span class="premium-badge">Premium</span>
+              @end
+              <span class="muted">par {{ channel.owner }} · {{ channel.sport }}</span>
+            </div>
+          </div>
+          <p>{{ channel.description }}</p>
+          <div class="tile-stats">
+            <span><b>{{ channel.subscribers }}</b> abonnés</span>
+            <span><b>{{ channel.winRate }}%</b> réussite</span>
+          </div>
+          <div class="tile-foot">
+            <span class="price-tag">{{ channel.price }} Cr/mois</span>
+            <button class="btn-follow">S'abonner</button>
+          </div>
+        </article>
+      @end
+    </div>
+    <p class="placeholder-note">Chaînes de démonstration : les vraies chaînes arriveront avec la création de chaîne.</p>
+  </div>
+@end

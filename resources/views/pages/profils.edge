@@ -1,0 +1,29 @@
+@layout({ title: 'BetPlus — Profils' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Pronostiqueurs</h1>
+        <p>Le classement des tipsters par taux de réussite.</p>
+      </div>
+    </div>
+    <div class="list-card">
+      @each((tipster, index) in tipsters)
+        <div class="list-row">
+          <span class="muted" style="width:20px;font-family:var(--font-data)">{{ index + 1 }}</span>
+          <div class="avatar {{ tipster.avatar }}" style="width:40px;height:40px;font-size:14px">{{ tipster.initials }}</div>
+          <div class="list-main">
+            <h4>{{ tipster.name }} <span class="muted">{{ tipster.verified ? '· vérifié' : '' }}</span></h4>
+            <p>{{ tipster.handle }} · {{ tipster.sport }}</p>
+          </div>
+          <div class="tile-stats">
+            <span><b>{{ tipster.winRate }}%</b> réussite</span>
+            <span><b>{{ tipster.followers }}</b> abonnés</span>
+            <span><b>{{ tipster.tips }}</b> pronos</span>
+          </div>
+          <button class="btn-follow">Suivre</button>
+        </div>
+      @end
+    </div>
+    <p class="placeholder-note">Profils de démonstration : le classement utilisera les vrais résultats des pronostics.</p>
+  </div>
+@end

@@ -35,7 +35,7 @@ export default class StatshubSyncFixtures extends BaseCommand {
 
   async run() {
     const { default: StatsHubClient } = await import('#services/statshub_client')
-    const { default: Fixture } = await import('#models/fixture')
+    const { default: FixtureDays } = await import('#services/fixture_days')
     const client = await this.app.container.make(StatsHubClient)
 
     const start = this.date
@@ -66,12 +66,7 @@ export default class StatshubSyncFixtures extends BaseCommand {
         return
       }
 
-      fixtures = fixtures.filter(
-        (fixture) => fixture.event_id && fixture.home_team && fixture.away_team
-      )
-      for (const fixture of fixtures) {
-        await Fixture.upsertFromApi(fixture, date)
-      }
+      fixtures = await FixtureDays.store(date, fixtures)
 
       this.logger.success(`${date}: ${fixtures.length} fixtures saved`)
       const table = this.ui

@@ -7,6 +7,23 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class FixtureDaySchema extends BaseModel {
+  static $columns = ['createdAt', 'date', 'fetchedAt', 'fixturesCount', 'id', 'updatedAt'] as const
+  $columns = FixtureDaySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.date()
+  declare date: DateTime
+  @column.dateTime()
+  declare fetchedAt: DateTime
+  @column()
+  declare fixturesCount: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class FixtureSchema extends BaseModel {
   static $columns = ['awayScore', 'awayTeamId', 'awayTeamName', 'country', 'createdAt', 'eventId', 'homeScore', 'homeTeamId', 'homeTeamName', 'id', 'matchDate', 'payload', 'round', 'startsAt', 'status', 'tournamentId', 'tournamentName', 'updatedAt', 'winnerCode'] as const
   $columns = FixtureSchema.$columns

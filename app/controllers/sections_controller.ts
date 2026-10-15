@@ -1,4 +1,5 @@
 import Fixture from '#models/fixture'
+import FixtureDays, { BROWSE_RANGE_DAYS } from '#services/fixture_days'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 
@@ -344,8 +345,13 @@ export default class SectionsController {
    */
   async events({ view, request }: HttpContext) {
     const filter = request.qs().statut ?? 'tous'
+    const today = FixtureDays.today()
+    const asked = DateTime.fromISO(String(request.qs().date ?? ''), { zone: 'utc' }).startOf('day')
+    const date = asked.isValid && FixtureDays.inRange(asked, today) ? asked : today
+    const loadState = await new FixtureDays().ensure(date)
+
     const query = Fixture.query()
-      .where('match_date', DateTime.utc().toISODate()!)
+      .where('match_date', date.toISODate()!)
       .whereNot('status', 'canceled')
       .orderBy('tournament_name', 'asc')
       .orderBy('starts_at', 'asc')
@@ -369,6 +375,31 @@ export default class SectionsController {
       })),
       total: fixtures.length,
       filter,
+      day: dayNavigation(date, today),
+      loadFailed: loadState === 'error',
     })
+  }
+}
+
+/**
+ * Labels and links for the day picker on the Événements page.
+ */
+function dayNavigation(date: DateTime, today: DateTime) {
+  const offset = Math.round(date.diff(today, 'days').days)
+  const relative: Record<number, string> = { [-1]: 'Hier', 0: "Aujourd'hui", 1: 'Demain' }
+  const iso = (d: DateTime) => d.toISODate()!
+  const label = date.setLocale('fr').toFormat('cccc d LLLL')
+  return {
+    date: iso(date),
+    isToday: offset === 0,
+    title: offset === 0 ? 'Matchs du jour' : `Matchs du ${label}`,
+    label: relative[offset]
+      ? `${relative[offset]} · ${date.setLocale('fr').toFormat('d LLL')}`
+      : label.charAt(0).toUpperCase() + label.slice(1),
+    previous: offset > -BROWSE_RANGE_DAYS ? iso(date.minus({ days: 1 })) : null,
+    next: offset < BROWSE_RANGE_DAYS ? iso(date.plus({ days: 1 })) : null,
+    min: iso(today.minus({ days: BROWSE_RANGE_DAYS })),
+    max: iso(today.plus({ days: BROWSE_RANGE_DAYS })),
+    isPast: offset < 0,
   }
 }

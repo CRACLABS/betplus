@@ -1,4 +1,5 @@
 import statshubConfig from '#config/statshub'
+import type Fixture from '#models/fixture'
 import app from '@adonisjs/core/services/app'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
@@ -27,6 +28,37 @@ export default class LogoStore {
   private remoteUrl(kind: LogoKind, id: number) {
     const base = this.options.baseUrl.replace(/\/+$/, '')
     return kind === 'teams' ? `${base}/team/${id}/image` : `${base}/unique-tournament/${id}/image`
+  }
+
+  /**
+   * Download the missing team and competition logos of these fixtures.
+   */
+  async downloadFor(fixtures: Pick<Fixture, 'homeTeamId' | 'awayTeamId' | 'uniqueTournamentId'>[]) {
+    const teams = new Set<number>()
+    const tournaments = new Set<number>()
+    for (const fixture of fixtures) {
+      teams.add(fixture.homeTeamId)
+      teams.add(fixture.awayTeamId)
+      if (fixture.uniqueTournamentId) tournaments.add(fixture.uniqueTournamentId)
+    }
+
+    const counts = { saved: 0, exists: 0, missing: 0, failed: 0, error: null as string | null }
+    const jobs = [
+      ...[...tournaments].map((id) => ['tournaments', id] as const),
+      ...[...teams].map((id) => ['teams', id] as const),
+    ]
+    for (const [kind, id] of jobs) {
+      try {
+        const result = await this.download(kind, id)
+        counts[result]++
+        // Be gentle with the image server.
+        if (result === 'saved') await new Promise((resolve) => setTimeout(resolve, 150))
+      } catch (error) {
+        counts.failed++
+        counts.error ??= (error as Error).message
+      }
+    }
+    return { ...counts, teams: teams.size, tournaments: tournaments.size }
   }
 
   /**

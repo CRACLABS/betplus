@@ -10,7 +10,11 @@ export default class FeedController {
   async show({ view }: HttpContext) {
     const fixtures = await Fixture.query()
       .where('match_date', DateTime.utc().toISODate()!)
-      .orderBy('starts_at', 'asc')
+      .whereNot('status', 'canceled')
+      // Live matches first, then upcoming, then finished
+      .orderByRaw(
+        "CASE status WHEN 'inprogress' THEN 0 WHEN 'notstarted' THEN 1 ELSE 2 END, starts_at ASC"
+      )
       .limit(6)
 
     return view.render('pages/home', { fixtures })

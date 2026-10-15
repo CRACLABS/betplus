@@ -82,6 +82,11 @@ export default class StatsHubClient {
       throw await StatsHubException.fromResponse(endpoint, response)
     }
 
-    return (await response.json()) as T
+    // Parse wraps endpoint results as { status: 'success', data: {...} }
+    const body = (await response.json()) as { status?: string; data?: T } | T
+    if (body && typeof body === 'object' && 'data' in body && 'status' in body) {
+      return body.data as T
+    }
+    return body as T
   }
 }

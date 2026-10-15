@@ -46,6 +46,22 @@ test.group('StatsHubClient', () => {
     assert.equal(response.fixtures[0].home_team.name, 'Paris Saint-Germain')
   })
 
+  test('unwraps the { status, data } envelope Parse returns', async ({ assert }) => {
+    const client = new StatsHubClient({
+      ...config,
+      fetch: async () =>
+        Response.json({
+          status: 'success',
+          data: { date: '2026-10-15', total_fixtures: 1, fixtures: [fixture] },
+        }),
+    })
+
+    const response = await client.fixturesByDate('2026-10-15')
+
+    assert.equal(response.total_fixtures, 1)
+    assert.equal(response.fixtures[0].event_id, 111)
+  })
+
   test('turns a Parse rate-limit error into a StatsHubException', async ({ assert }) => {
     const client = new StatsHubClient({
       ...config,

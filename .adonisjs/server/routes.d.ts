@@ -12,6 +12,12 @@ export type ScannedRoutes = {
     'events': { paramsTuple?: []; params?: {} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
+    'account.profile': { paramsTuple?: []; params?: {} }
+    'settings.show': { paramsTuple?: [ParamValue?]; params?: {'section'?: ParamValue} }
+    'settings.profile': { paramsTuple?: []; params?: {} }
+    'settings.email': { paramsTuple?: []; params?: {} }
+    'settings.password': { paramsTuple?: []; params?: {} }
+    'settings.premium.cancel': { paramsTuple?: []; params?: {} }
     'premium.subscribe': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -28,6 +34,8 @@ export type ScannedRoutes = {
     'events': { paramsTuple?: []; params?: {} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
+    'account.profile': { paramsTuple?: []; params?: {} }
+    'settings.show': { paramsTuple?: [ParamValue?]; params?: {'section'?: ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }
@@ -40,10 +48,16 @@ export type ScannedRoutes = {
     'events': { paramsTuple?: []; params?: {} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
+    'account.profile': { paramsTuple?: []; params?: {} }
+    'settings.show': { paramsTuple?: [ParamValue?]; params?: {'section'?: ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'settings.profile': { paramsTuple?: []; params?: {} }
+    'settings.email': { paramsTuple?: []; params?: {} }
+    'settings.password': { paramsTuple?: []; params?: {} }
+    'settings.premium.cancel': { paramsTuple?: []; params?: {} }
     'premium.subscribe': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }

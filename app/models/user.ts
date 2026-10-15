@@ -21,4 +21,25 @@ export default class User extends compose(UserSchema, withAuthFinder(hash)) {
     }
     return `${first.slice(0, 2)}`.toUpperCase()
   }
+
+  /**
+   * Public @handle: the chosen username, or the email name until one is set.
+   */
+  get handle() {
+    return (
+      this.username ??
+      this.email
+        .split('@')[0]
+        .toLowerCase()
+        .replace(/[^a-z0-9_]/g, '')
+    )
+  }
+
+  get displayName() {
+    return this.fullName || this.handle
+  }
+
+  get roleLabel() {
+    return this.role === 'tipster' ? 'Pronostiqueur' : 'Parieur'
+  }
 }

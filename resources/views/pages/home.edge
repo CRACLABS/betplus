@@ -6,9 +6,9 @@
       <section class="card profile-card">
         <div class="profile-cover"></div>
         <div class="profile-body">
-          <div class="avatar avatar-a avatar-live">JD</div>
-          <div class="profile-name">John Doe</div>
-          <div class="profile-rank">Tipster <b>Pro</b> · @johndoe</div>
+          <div class="avatar avatar-a avatar-live">{{ auth.user.initials }}</div>
+          <div class="profile-name">{{ auth.user.displayName }}</div>
+          <div class="profile-rank">{{ auth.user.roleLabel }} · {{ '@' + auth.user.handle }}</div>
           <div class="profile-stats">
             <div>
               <div class="stat-value green">3 400</div>
@@ -23,7 +23,7 @@
               <div class="stat-label">Réussite</div>
             </div>
           </div>
-          <a href="#" class="profile-link">Voir mon profil</a>
+          <a href="/moi" class="profile-link">Voir mon profil</a>
         </div>
       </section>
 
@@ -89,7 +89,7 @@
     <div class="feed">
       <section class="card composer">
         <div class="composer-top">
-          <div class="avatar avatar-a">JD</div>
+          <div class="avatar avatar-a">{{ auth.user.initials }}</div>
           <div class="composer-input">Partage ton analyse, publie un pronostic…</div>
         </div>
         <div class="composer-actions">

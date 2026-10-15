@@ -1,0 +1,150 @@
+@layout({ title: 'BetPlus — Paramètres' })
+  <div class="section-page">
+    <div class="section-head">
+      <div>
+        <h1>Paramètres</h1>
+        <p>Gère ton profil public, ton compte et ton abonnement.</p>
+      </div>
+      <a href="/moi" class="btn btn-ghost">Voir mon profil</a>
+    </div>
+
+    <div class="settings-layout">
+      <nav class="settings-nav">
+        <a href="/parametres/profil" class="{{ section === 'profil' ? 'active' : '' }}">Profil</a>
+        <a href="/parametres/compte" class="{{ section === 'compte' ? 'active' : '' }}">Compte</a>
+        <a href="/parametres/securite" class="{{ section === 'securite' ? 'active' : '' }}">Sécurité</a>
+        <a href="/parametres/abonnement" class="{{ section === 'abonnement' ? 'active' : '' }}">Abonnement</a>
+      </nav>
+
+      <div>
+        @if(section === 'profil')
+          <section class="settings-card">
+            <h2>Profil public</h2>
+            <p>Ce que les autres membres voient sur ta page.</p>
+            @form({ route: 'settings.profile', method: 'POST' })
+              <div class="form-row">
+                <div>
+                  @field.root({ name: 'fullName' })
+                    @!field.label({ text: 'Nom complet' })
+                    @!input.control({ value: user.fullName ?? '', autocomplete: 'name' })
+                    @!field.error()
+                  @end
+                </div>
+                <div>
+                  @field.root({ name: 'username' })
+                    @!field.label({ text: "Nom d'utilisateur" })
+                    @!input.control({ value: user.username ?? '', placeholder: user.handle })
+                    @!field.error()
+                  @end
+                </div>
+              </div>
+              <div>
+                @field.root({ name: 'bio' })
+                  @!field.label({ text: 'Bio' })
+                  @!textarea.control({ value: user.bio ?? '', maxlength: 280, placeholder: 'Ton style de pronos, tes championnats préférés…' })
+                  @!field.error()
+                @end
+              </div>
+              <div class="form-row">
+                <div>
+                  @field.root({ name: 'favoriteSport' })
+                    @!field.label({ text: 'Sport préféré' })
+                    @!input.control({ value: user.favoriteSport ?? '', placeholder: 'Football' })
+                    @!field.error()
+                  @end
+                </div>
+                <div>
+                  <label>Type de compte</label>
+                  <select name="role">
+                    <option value="bettor" {{ user.role !== 'tipster' ? 'selected' : '' }}>Parieur</option>
+                    <option value="tipster" {{ user.role === 'tipster' ? 'selected' : '' }}>Pronostiqueur</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit">Enregistrer</button>
+            @end
+          </section>
+        @elseif(section === 'compte')
+          <section class="settings-card">
+            <h2>Adresse email</h2>
+            <p>Tu te connectes avec <b>{{ user.email }}</b>.</p>
+            @form({ route: 'settings.email', method: 'POST' })
+              <div>
+                @field.root({ name: 'email' })
+                  @!field.label({ text: 'Nouvelle adresse email' })
+                  @!input.control({ type: 'email', value: user.email, autocomplete: 'email' })
+                  @!field.error()
+                @end
+              </div>
+              <div>
+                @field.root({ name: 'currentPassword' })
+                  @!field.label({ text: 'Mot de passe actuel' })
+                  @!input.control({ type: 'password', autocomplete: 'current-password' })
+                  @!field.error()
+                @end
+              </div>
+              <button type="submit">Changer l'email</button>
+            @end
+          </section>
+        @elseif(section === 'securite')
+          <section class="settings-card">
+            <h2>Mot de passe</h2>
+            <p>8 caractères minimum.</p>
+            @form({ route: 'settings.password', method: 'POST' })
+              <div>
+                @field.root({ name: 'currentPassword' })
+                  @!field.label({ text: 'Mot de passe actuel' })
+                  @!input.control({ type: 'password', autocomplete: 'current-password' })
+                  @!field.error()
+                @end
+              </div>
+              <div class="form-row">
+                <div>
+                  @field.root({ name: 'password' })
+                    @!field.label({ text: 'Nouveau mot de passe' })
+                    @!input.control({ type: 'password', autocomplete: 'new-password' })
+                    @!field.error()
+                  @end
+                </div>
+                <div>
+                  @field.root({ name: 'passwordConfirmation' })
+                    @!field.label({ text: 'Confirmer' })
+                    @!input.control({ type: 'password', autocomplete: 'new-password' })
+                    @!field.error()
+                  @end
+                </div>
+              </div>
+              <button type="submit">Changer le mot de passe</button>
+            @end
+          </section>
+        @else
+          <section class="settings-card">
+            <h2>Abonnement</h2>
+            <p>Le paiement n'est pas encore branché : l'abonnement est simulé.</p>
+            <div class="plan-box">
+              <div>
+                <b>{{ user.isPremium ? 'BetPlus Premium' : 'Gratuit' }}</b>
+                <ul>
+                  <li>Accès aux chaînes privées des meilleurs tipsters</li>
+                  <li>Pronostics premium et statistiques détaillées</li>
+                </ul>
+              </div>
+              @if(user.isPremium)
+                <span class="premium-badge">Actif</span>
+              @else
+                @form({ route: 'premium.subscribe', method: 'POST' })
+                  <button type="submit">Passer Premium</button>
+                @end
+              @end
+            </div>
+            @if(user.isPremium)
+              @form({ route: 'settings.premium.cancel', method: 'POST', style: 'margin-top:14px' })
+                <button type="submit" class="btn-danger-link" onclick="return confirm('Résilier ton abonnement Premium ?')">Résilier l'abonnement</button>
+              @end
+            @end
+          </section>
+        @end
+      </div>
+    </div>
+  </div>
+@end

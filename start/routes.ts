@@ -23,6 +23,17 @@ router
     router.get('evenements', [controllers.Sections, 'events']).as('events')
     router.get('messages', [controllers.Sections, 'messages']).as('messages')
     router.get('alertes', [controllers.Sections, 'alerts']).as('alerts')
+
+    router.get('moi', [controllers.Account, 'show']).as('account.profile')
+    router.get('parametres/:section?', [controllers.Settings, 'show']).as('settings.show')
+    router.post('parametres/profil', [controllers.Settings, 'updateProfile']).as('settings.profile')
+    router.post('parametres/compte', [controllers.Settings, 'updateEmail']).as('settings.email')
+    router
+      .post('parametres/securite', [controllers.Settings, 'updatePassword'])
+      .as('settings.password')
+    router
+      .post('parametres/abonnement/resilier', [controllers.Settings, 'cancelPremium'])
+      .as('settings.premium.cancel')
   })
   .use(middleware.auth())
 

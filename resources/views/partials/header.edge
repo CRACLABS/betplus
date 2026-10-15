@@ -47,25 +47,58 @@
       @!themetoggle()
       @if(auth.user)
         @if(auth.user.isPremium)
-          <span class="premium-badge" title="Membre Premium">
+          <a href="/parametres/abonnement" class="premium-badge" title="Membre Premium">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 1 15 8l7.5 1-5.4 5.2 1.3 7.4-6.9-3.6-6.9 3.6 1.3-7.4L.5 9 8 8Z"/></svg>
             Premium
-          </span>
+          </a>
         @else
-          @form({ route: 'premium.subscribe', method: 'POST' })
-            <button type="submit" class="btn btn-ghost" style="height:30px;padding:0 12px;font-size:12px">Passer Premium</button>
-          @end
+          <a href="/parametres/abonnement" class="premium-cta" title="Découvrir Premium">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 1 15 8l7.5 1-5.4 5.2 1.3 7.4-6.9-3.6-6.9 3.6 1.3-7.4L.5 9 8 8Z"/></svg>
+            <span>Premium</span>
+          </a>
         @end
-        <span class="credits-pill">
+        <a href="/moi" class="credits-pill" title="Tes crédits">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
-          3 400 Cr
-        </span>
-        <div class="avatar avatar-a avatar-live" style="width:34px;height:34px;font-size:12px">{{ auth.user.initials ?? 'JD' }}</div>
-        @form({ route: 'session.destroy', method: 'POST' })
-          <button type="submit" class="icon-btn" title="Déconnexion">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          <span>3 400</span><small>Cr</small>
+        </a>
+        <div class="user-menu" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
+          <button type="button" class="user-trigger" @click="open = !open" :aria-expanded="open" aria-haspopup="menu" aria-label="Menu du compte">
+            <span class="avatar avatar-a avatar-live">{{ auth.user.initials }}</span>
+            <svg class="user-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-        @end
+          <div class="user-dropdown" role="menu" x-show="open" x-cloak x-transition.origin.top.right>
+            <a href="/moi" class="user-dropdown-head">
+              <span class="avatar avatar-a">{{ auth.user.initials }}</span>
+              <span>
+                <b>{{ auth.user.displayName }}</b>
+                <small>{{ '@' + auth.user.handle }} · {{ auth.user.roleLabel }}</small>
+              </span>
+            </a>
+            <a href="/moi" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              Mon profil
+            </a>
+            <a href="/parametres/profil" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              Modifier le profil
+            </a>
+            <a href="/parametres/compte" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+              Paramètres
+            </a>
+            <a href="/parametres/abonnement" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 1 15 8l7.5 1-5.4 5.2 1.3 7.4-6.9-3.6-6.9 3.6 1.3-7.4L.5 9 8 8Z"/></svg>
+              Abonnement
+            </a>
+            <div class="user-dropdown-sep"></div>
+            @form({ route: 'session.destroy', method: 'POST', class: 'user-dropdown-form' })
+              <button type="submit" role="menuitem" class="user-dropdown-danger">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                Se déconnecter
+              </button>
+            @end
+          </div>
+        </div>
       @else
         <a class="btn btn-ghost" href="/login">Connexion</a>
         <a class="btn btn-primary" href="/signup">S'inscrire</a>

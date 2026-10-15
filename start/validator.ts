@@ -12,7 +12,7 @@
 */
 
 import { DateTime } from 'luxon'
-import { VineDate } from '@vinejs/vine'
+import vine, { SimpleMessagesProvider, VineDate } from '@vinejs/vine'
 
 declare module '@vinejs/vine/types' {
   interface VineGlobalTransforms {
@@ -21,3 +21,18 @@ declare module '@vinejs/vine/types' {
 }
 
 VineDate.transform((value) => DateTime.fromJSDate(value))
+
+/**
+ * French error messages shown under form fields.
+ */
+vine.messagesProvider = new SimpleMessagesProvider({
+  'required': 'Ce champ est obligatoire',
+  'email': 'Adresse email invalide',
+  'minLength': 'Au moins {{ min }} caractères',
+  'maxLength': '{{ max }} caractères maximum',
+  'regex': 'Format invalide',
+  'enum': 'Choix invalide',
+  'confirmed': 'Les mots de passe ne correspondent pas',
+  'database.unique': 'Déjà utilisé par un autre membre',
+  'username.regex': 'Lettres minuscules, chiffres et _ uniquement',
+})

@@ -68,12 +68,16 @@ export class FixtureSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'isPremium', 'password', 'role', 'updatedAt'] as const
+  static $columns = ['bio', 'createdAt', 'email', 'favoriteSport', 'fullName', 'id', 'isPremium', 'password', 'role', 'updatedAt', 'username'] as const
   $columns = UserSchema.$columns
+  @column()
+  declare bio: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
   declare email: string
+  @column()
+  declare favoriteSport: string | null
   @column()
   declare fullName: string | null
   @column({ isPrimary: true })
@@ -86,4 +90,6 @@ export class UserSchema extends BaseModel {
   declare role: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column()
+  declare username: string | null
 }

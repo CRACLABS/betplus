@@ -1,0 +1,39 @@
+@layout({ title: 'BetPlus — Mon profil' })
+  <div class="section-page">
+    <div class="me-card">
+      <div class="me-cover"></div>
+      <div class="me-body">
+        <div class="me-top">
+          <span class="avatar avatar-a">{{ user.initials }}</span>
+          <a href="/parametres/profil" class="btn btn-ghost">Modifier le profil</a>
+        </div>
+        <div class="me-name">
+          {{ user.displayName }}
+          <span class="role-chip">{{ user.roleLabel }}</span>
+          @if(user.isPremium)
+            <span class="premium-badge">Premium</span>
+          @end
+        </div>
+        <div class="me-handle">{{ '@' + user.handle }}</div>
+        @if(user.bio)
+          <p class="me-bio">{{ user.bio }}</p>
+        @else
+          <p class="me-bio muted">Pas encore de bio. <a href="/parametres/profil" class="green">Présente-toi</a> pour que les autres membres te connaissent.</p>
+        @end
+        <div class="me-meta">
+          @if(user.favoriteSport)
+            <span>Sport préféré : {{ user.favoriteSport }}</span>
+          @end
+          <span>Membre depuis {{ user.createdAt.setLocale('fr').toFormat('LLLL yyyy') }}</span>
+        </div>
+        <div class="me-stats">
+          <div><div class="stat-value green">{{ stats.credits }}</div><div class="stat-label">Crédits</div></div>
+          <div><div class="stat-value">{{ stats.followers }}</div><div class="stat-label">Abonnés</div></div>
+          <div><div class="stat-value">{{ stats.following }}</div><div class="stat-label">Abonnements</div></div>
+          <div><div class="stat-value green">{{ stats.winRate }}</div><div class="stat-label">Réussite</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="placeholder-note">Les statistiques sont des exemples tant que les pronostics ne sont pas enregistrés.</p>
+  </div>
+@end

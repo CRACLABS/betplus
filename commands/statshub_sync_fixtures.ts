@@ -1,6 +1,7 @@
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import { DateTime } from 'luxon'
+import { writeFile } from 'node:fs/promises'
 
 export default class StatshubSyncFixtures extends BaseCommand {
   static commandName = 'statshub:sync-fixtures'
@@ -22,6 +23,9 @@ export default class StatshubSyncFixtures extends BaseCommand {
   })
   declare days: number
 
+  @flags.boolean({ description: 'Save the raw API response to tmp/ for debugging' })
+  declare raw: boolean
+
   async run() {
     const { default: StatsHubClient } = await import('#services/statshub_client')
     const { default: Fixture } = await import('#models/fixture')
@@ -42,6 +46,12 @@ export default class StatshubSyncFixtures extends BaseCommand {
       let fixtures
       try {
         const response = await client.fixturesByDate(date)
+        if (this.raw) {
+          const file = this.app.tmpPath(`statshub-raw-${date}.json`)
+          await writeFile(file, JSON.stringify(response, null, 2))
+          this.logger.info(`Raw response saved to ${file}`)
+          this.logger.info(`Top-level keys: ${Object.keys(response ?? {}).join(', ')}`)
+        }
         fixtures = response.fixtures ?? []
       } catch (error) {
         this.logger.error((error as Error).message)

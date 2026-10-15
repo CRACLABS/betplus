@@ -5,51 +5,37 @@ import StatsHubClient from '#services/statshub_client'
 import { DateTime } from 'luxon'
 
 /**
- * Minutes between two get_match_stats calls for a match still in play.
- */
-export const LIVE_REFRESH_MINUTES = 15
-
-/**
- * Credits page views leave untouched so the fixtures sync keeps running.
+ * Credits the stats button leaves untouched so the fixtures sync keeps running.
  */
 export const PAGE_RESERVE = 30
 
-export type StatsState = 'cached' | 'fetched' | 'not-started' | 'budget' | 'error'
+export type StatsState = 'fetched' | 'not-started' | 'budget' | 'error'
 
 /**
- * get_match_stats (5 credits) is called when someone opens a match page:
- * once when the match is over (then kept for good), and at most every
- * LIVE_REFRESH_MINUTES while it is live. Nothing is fetched before kick-off.
+ * get_match_stats (5 credits) is only called when someone presses
+ * "Actualiser les stats" on a match page; pages show the last saved answer.
  */
 export default class MatchStatsService {
   constructor(private client: Pick<StatsHubClient, 'matchStats'> = new StatsHubClient()) {}
 
-  static needsFetch(stat: MatchStat | null, fixture: Fixture, now = DateTime.utc()) {
-    if (!fixture.isLive && !fixture.isFinished) return false
-    if (!stat) return true
-    if (stat.isFinal) return false
-    if (fixture.isFinished) return true
-    return stat.fetchedAt < now.minus({ minutes: LIVE_REFRESH_MINUTES })
+  load(fixture: Fixture) {
+    return MatchStat.findBy('eventId', fixture.eventId)
   }
 
-  async load(fixture: Fixture): Promise<{ stat: MatchStat | null; state: StatsState }> {
-    const stat = await MatchStat.findBy('eventId', fixture.eventId)
-    if (!fixture.isLive && !fixture.isFinished) return { stat, state: 'not-started' }
-    if (!MatchStatsService.needsFetch(stat, fixture)) return { stat, state: 'cached' }
-    if (!(await CreditLedger.canSpend('get_match_stats', PAGE_RESERVE))) {
-      return { stat, state: 'budget' }
-    }
+  async refresh(fixture: Fixture): Promise<StatsState> {
+    if (!fixture.isLive && !fixture.isFinished) return 'not-started'
+    if (!(await CreditLedger.canSpend('get_match_stats', PAGE_RESERVE))) return 'budget'
 
     try {
       const payload = await this.client.matchStats(fixture)
       await CreditLedger.record('get_match_stats')
-      const saved = await MatchStat.updateOrCreate(
+      await MatchStat.updateOrCreate(
         { eventId: fixture.eventId },
         { payload, isFinal: fixture.isFinished, fetchedAt: DateTime.utc() }
       )
-      return { stat: saved, state: 'fetched' }
+      return 'fetched'
     } catch {
-      return { stat, state: 'error' }
+      return 'error'
     }
   }
 }

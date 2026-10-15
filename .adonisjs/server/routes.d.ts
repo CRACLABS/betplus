@@ -10,7 +10,9 @@ export type ScannedRoutes = {
     'groups': { paramsTuple?: []; params?: {} }
     'profiles': { paramsTuple?: []; params?: {} }
     'events': { paramsTuple?: []; params?: {} }
+    'events.refresh': { paramsTuple?: []; params?: {} }
     'matches.show': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'matches.refresh_stats': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
     'account.profile': { paramsTuple?: []; params?: {} }
@@ -58,6 +60,8 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'events.refresh': { paramsTuple?: []; params?: {} }
+    'matches.refresh_stats': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'settings.preferences': { paramsTuple?: []; params?: {} }
     'settings.profile': { paramsTuple?: []; params?: {} }
     'settings.email': { paramsTuple?: []; params?: {} }

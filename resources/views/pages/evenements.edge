@@ -36,6 +36,10 @@
       @end
       <a href="/evenements?date={{ day.date }}&statut=a-venir" class="chip {{ filter === 'a-venir' ? 'active' : '' }}">À venir</a>
       <a href="/evenements?date={{ day.date }}&statut=termines" class="chip {{ filter === 'termines' ? 'active' : '' }}">Terminés</a>
+      @form({ route: 'events.refresh', method: 'POST', class: 'inline-form chip-row-end' })
+        <input type="hidden" name="date" value="{{ day.date }}" />
+        <button type="submit" class="refresh-btn" title="Récupère les derniers scores de ce jour auprès de StatsHub">Actualiser les scores · 1 crédit</button>
+      @end
     </div>
     @if(loadFailed)
       <p class="placeholder-note day-error">Impossible de charger les matchs de ce jour pour le moment. Réessaie dans quelques minutes.</p>

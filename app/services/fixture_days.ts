@@ -12,9 +12,8 @@ export const BROWSE_RANGE_DAYS = 7
 
 /**
  * Fixtures are kept per day. A day is fetched from StatsHub (1 Parse credit)
- * the first time someone opens it, and once more after its matches are over
- * so the final scores land. Today is otherwise refreshed by
- * `node ace statshub:sync-fixtures`. So each day costs at most 2 credits.
+ * the first time someone opens it. After that, scores only change when
+ * someone presses "Actualiser" or runs `node ace statshub:sync-fixtures`.
  */
 export default class FixtureDays {
   constructor(private client: Pick<StatsHubClient, 'fixturesByDate'> = new StatsHubClient()) {}
@@ -28,23 +27,20 @@ export default class FixtureDays {
   }
 
   /**
-   * Whether `date` must be (re)fetched: never fetched, or last fetched
-   * before its matches were over (end of day + 3h) and that time has passed.
-   */
-  static needsFetch(day: FixtureDay | null, date: DateTime, now = DateTime.utc()) {
-    if (!day) return true
-    const settled = date.endOf('day').plus({ hours: 3 })
-    return now > settled && day.fetchedAt < settled
-  }
-
-  /**
    * Make sure the fixtures of `date` are in the database.
    */
   async ensure(date: DateTime): Promise<'cached' | 'fetched' | 'out-of-range' | 'error'> {
     if (!FixtureDays.inRange(date)) return 'out-of-range'
     const day = (await FixtureDay.findBy('date', date.toISODate()!)) ?? (await this.adopt(date))
-    if (!FixtureDays.needsFetch(day, date)) return 'cached'
+    if (day) return 'cached'
+    return this.refresh(date)
+  }
 
+  /**
+   * Fetch `date` again (1 credit), e.g. from the "Actualiser" button.
+   */
+  async refresh(date: DateTime): Promise<'fetched' | 'out-of-range' | 'error'> {
+    if (!FixtureDays.inRange(date)) return 'out-of-range'
     if (!(await CreditLedger.canSpend('get_fixtures_by_date'))) return 'error'
     try {
       const response = await this.client.fixturesByDate(date.toISODate()!)

@@ -30,22 +30,35 @@
       </div>
     </section>
 
-    @if(statsState === 'not-started')
+    <div class="refresh-bar">
+      <span>
+        @if(updatedAt)
+          Stats chargées le {{ updatedAt }}
+        @else
+          Rien ne se met à jour tout seul : actualise quand tu veux.
+        @end
+      </span>
+      @form({ route: 'events.refresh', method: 'POST', class: 'inline-form' })
+        <input type="hidden" name="date" value="{{ fixture.matchDate.toISODate() }}" />
+        <button type="submit" class="refresh-btn" title="Met à jour les scores de tous les matchs du jour">Actualiser le score · 1 crédit</button>
+      @end
+      @if(started)
+        @form({ route: 'matches.refresh_stats', routeParams: { eventId: fixture.eventId }, method: 'POST', class: 'inline-form' })
+          <button type="submit" class="refresh-btn">{{ stat ? 'Actualiser les stats' : 'Charger les stats' }} · 5 crédits</button>
+        @end
+      @end
+    </div>
+
+    @if(!started)
       <div class="settings-card stats-empty">
         <h2>Statistiques</h2>
-        <p>Les statistiques du match (xG, tirs, joueurs) s'affichent dès le coup d'envoi.</p>
+        <p>Les statistiques du match (xG, tirs, joueurs) seront disponibles après le coup d'envoi.</p>
       </div>
     @elseif(stat && stat.hasCoverage)
       @let(t = stat.totals)
       <section class="settings-card">
         <h2>Statistiques du match</h2>
-        <p>
-          @if(fixture.isLive)
-            Mises à jour toutes les {{ refreshMinutes }} min pendant le match · dernière à {{ updatedAt }}
-          @else
-            Statistiques finales
-          @end
-        </p>
+        <p>{{ stat.isFinal ? 'Statistiques finales' : 'Statistiques en cours de match, au moment du chargement' }}</p>
         @each(row in [
           { label: 'Expected goals (xG)', home: stat.homeXg, away: stat.awayXg, decimals: 2 },
           { label: 'Tirs', home: t.home.shots, away: t.away.shots, decimals: 0 },
@@ -99,24 +112,16 @@
           </section>
         @end
       </div>
+    @elseif(stat)
+      <div class="settings-card stats-empty">
+        <h2>Statistiques</h2>
+        <p>StatsHub n'a pas de carte des tirs pour ce match : pas de xG ni de statistiques joueurs.</p>
+      </div>
     @else
       <div class="settings-card stats-empty">
         <h2>Statistiques</h2>
-        @if(statsState === 'budget')
-          <p>La limite mensuelle de crédits StatsHub est presque atteinte : les statistiques sont mises en pause pour garder la mise à jour des matchs.</p>
-        @elseif(statsState === 'error')
-          <p>Impossible de charger les statistiques pour le moment. Réessaie dans quelques minutes.</p>
-        @else
-          <p>StatsHub n'a pas de carte des tirs pour ce match : pas de xG ni de statistiques joueurs.</p>
-        @end
+        <p>Les statistiques ne sont pas encore chargées. Clique sur « Charger les stats » pour les récupérer (5 crédits).</p>
       </div>
     @end
   </div>
-
-  @if(fixture.isLive)
-    <script>
-      // The score comes from our database, so reloading costs no credits.
-      setTimeout(function () { location.reload() }, 60000)
-    </script>
-  @end
 @end

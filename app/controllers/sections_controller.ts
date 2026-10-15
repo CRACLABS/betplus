@@ -341,6 +341,18 @@ export default class SectionsController {
   }
 
   /**
+   * "Actualiser les scores" button: fetch the shown day again (1 credit).
+   */
+  async refreshEvents({ request, response, session }: HttpContext) {
+    const date = DateTime.fromISO(String(request.input('date', '')), { zone: 'utc' }).startOf('day')
+    const day = date.isValid ? date : FixtureDays.today()
+    const result = await new FixtureDays().refresh(day)
+    if (result === 'fetched') session.flash('success', 'Scores mis à jour (1 crédit)')
+    else session.flash('error', 'Impossible de mettre à jour les scores pour le moment')
+    return response.redirect().back()
+  }
+
+  /**
    * Today's real fixtures from StatsHub, grouped by competition.
    */
   async events({ view, request }: HttpContext) {

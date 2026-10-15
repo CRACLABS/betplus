@@ -3047,3 +3047,46 @@ a.event-item {
     font-size: 13px;
   }
 }
+
+/* Manual refresh buttons (Événements, match page) */
+form.inline-form {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0;
+}
+.chip-row-end {
+  margin-left: auto;
+}
+form.inline-form button.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+form.inline-form button.refresh-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: var(--surface);
+}
+.refresh-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.refresh-bar > span {
+  flex: 1;
+  min-width: 200px;
+  color: var(--text-3);
+  font-size: 12.5px;
+}

@@ -50,6 +50,31 @@ export default class Fixture extends FixtureSchema {
   }
 
   /**
+   * Kick-off time shown to users, in French time.
+   */
+  get kickoff() {
+    return this.startsAt ? this.startsAt.setZone('Europe/Paris').toFormat('HH:mm') : null
+  }
+
+  get statusLabel() {
+    if (this.isLive) return 'En direct'
+    if (this.isFinished) return 'Terminé'
+    if (this.status === 'postponed') return 'Reporté'
+    return 'À venir'
+  }
+
+  /**
+   * Losing side of a finished match, to dim it (winner_code is not reliable).
+   */
+  get homeLost() {
+    return this.isFinished && this.hasScore && this.homeScore! < this.awayScore!
+  }
+
+  get awayLost() {
+    return this.isFinished && this.hasScore && this.awayScore! < this.homeScore!
+  }
+
+  /**
    * Competition id used for logos (the "unique" tournament, e.g. MLS = 242).
    */
   get uniqueTournamentId(): number | null {

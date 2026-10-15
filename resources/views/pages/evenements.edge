@@ -3,7 +3,7 @@
     <div class="section-head">
       <div>
         <h1>{{ day.title }}</h1>
-        <p>{{ total }} matchs de football{{ day.isToday ? " aujourd'hui" : '' }}, mis à jour par la synchronisation StatsHub.</p>
+        <p>{{ total }} matchs de football{{ day.isToday ? " aujourd'hui" : '' }}, heures de Paris.</p>
       </div>
       <form class="day-nav" method="get" action="/evenements">
         @if(filter !== 'tous')
@@ -48,31 +48,26 @@
             <span>{{ competition.name }}</span>
           </div>
           @each(match in competition.matches)
-            <div class="list-row">
-              <div class="event-date">
-                <div>
-                  @if(match.isLive)
-                    <b class="event-live">LIVE</b>
-                  @elseif(match.startsAt)
-                    <b>{{ match.startsAt.toFormat('HH:mm') }}</b><span>UTC</span>
-                  @else
-                    <b>–</b>
-                  @end
-                </div>
+            <div class="fx-row {{ match.isLive ? 'is-live' : '' }}">
+              <div class="fx-time">
+                <b>{{ match.kickoff ?? '–' }}</b>
+                <span class="fx-status fx-{{ match.isLive ? 'live' : (match.isFinished ? 'done' : 'next') }}">{{ match.statusLabel }}</span>
               </div>
-              <div class="list-main">
-                <div class="team-line">
+              <div class="fx-teams">
+                <div class="team-line {{ match.homeLost ? 'lost' : '' }}">
                   @!crest({ src: match.homeLogo, name: match.homeTeamName })
                   <h4>{{ match.homeTeamName }}</h4>
                 </div>
-                <div class="team-line">
+                <div class="team-line {{ match.awayLost ? 'lost' : '' }}">
                   @!crest({ src: match.awayLogo, name: match.awayTeamName })
                   <h4>{{ match.awayTeamName }}</h4>
                 </div>
               </div>
-              <span class="match-state">{{ match.isFinished ? 'Terminé' : (match.isLive ? 'En cours' : 'À venir') }}</span>
               @if(match.hasScore && match.status !== 'notstarted')
-                <span class="score-stack"><b>{{ match.homeScore }}</b><b>{{ match.awayScore }}</b></span>
+                <div class="fx-score">
+                  <b class="{{ match.homeLost ? 'lost' : '' }}">{{ match.homeScore }}</b>
+                  <b class="{{ match.awayLost ? 'lost' : '' }}">{{ match.awayScore }}</b>
+                </div>
               @end
             </div>
           @end

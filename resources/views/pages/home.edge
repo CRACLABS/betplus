@@ -260,19 +260,19 @@
               <div>
                 @if(fixture.isLive)
                   <b class="event-live">LIVE</b>
-                @elseif(fixture.startsAt)
-                  <b>{{ fixture.startsAt.toFormat('HH:mm') }}</b><span>UTC</span>
+                @elseif(fixture.kickoff)
+                  <b>{{ fixture.kickoff }}</b>
                 @else
                   <b>–</b>
                 @end
               </div>
             </div>
             <div class="event-text">
-              <div class="team-line">
+              <div class="team-line {{ fixture.homeLost ? 'lost' : '' }}">
                 @!crest({ src: fixture.homeLogo, name: fixture.homeTeamName })
                 <h4>{{ fixture.homeTeamName }}</h4>
               </div>
-              <div class="team-line">
+              <div class="team-line {{ fixture.awayLost ? 'lost' : '' }}">
                 @!crest({ src: fixture.awayLogo, name: fixture.awayTeamName })
                 <h4>{{ fixture.awayTeamName }}</h4>
               </div>
@@ -282,7 +282,7 @@
               </span>
             </div>
             @if(fixture.hasScore && fixture.status !== 'notstarted')
-              <span class="score-stack"><b>{{ fixture.homeScore }}</b><b>{{ fixture.awayScore }}</b></span>
+              <span class="fx-score"><b class="{{ fixture.homeLost ? 'lost' : '' }}">{{ fixture.homeScore }}</b><b class="{{ fixture.awayLost ? 'lost' : '' }}">{{ fixture.awayScore }}</b></span>
             @end
           </div>
         @else

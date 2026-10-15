@@ -36,6 +36,7 @@ export default class StatshubSyncFixtures extends BaseCommand {
   async run() {
     const { default: StatsHubClient } = await import('#services/statshub_client')
     const { default: FixtureDays } = await import('#services/fixture_days')
+    const { default: CreditLedger } = await import('#services/credit_ledger')
     const client = await this.app.container.make(StatsHubClient)
 
     const start = this.date
@@ -53,6 +54,7 @@ export default class StatshubSyncFixtures extends BaseCommand {
       let fixtures
       try {
         const response = await client.fixturesByDate(date)
+        await CreditLedger.record('get_fixtures_by_date')
         if (this.raw) {
           const file = this.app.tmpPath(`statshub-raw-${date}.json`)
           await writeFile(file, JSON.stringify(response, null, 2))
@@ -87,6 +89,9 @@ export default class StatshubSyncFixtures extends BaseCommand {
       }
       table.render()
     }
+
+    const used = await CreditLedger.usedThisMonth()
+    this.logger.info(`Parse credits used this month: ${used}`)
 
     if (this.logos) {
       await this.kernel.exec('statshub:sync-logos', [])

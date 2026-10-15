@@ -37,4 +37,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   PARSE_API_URL: Env.schema.string.optional({ format: 'url', tld: false }),
   STATSHUB_SCRAPER_ID: Env.schema.string.optional(),
   LOGO_BASE_URL: Env.schema.string.optional(),
+  STATSHUB_MONTHLY_BUDGET: Env.schema.number.optional(),
 })

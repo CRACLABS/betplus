@@ -21,6 +21,7 @@ router
     router.get('groupes', [controllers.Sections, 'groups']).as('groups')
     router.get('profils', [controllers.Sections, 'profiles']).as('profiles')
     router.get('evenements', [controllers.Sections, 'events']).as('events')
+    router.get('match/:eventId', [controllers.Matches, 'show']).as('matches.show')
     router.get('messages', [controllers.Sections, 'messages']).as('messages')
     router.get('alertes', [controllers.Sections, 'alerts']).as('alerts')
 

@@ -255,7 +255,7 @@
           <a href="/evenements">Agenda</a>
         </div>
         @each(fixture in fixtures)
-          <div class="event-item">
+          <a href="/match/{{ fixture.eventId }}" class="event-item">
             <div class="event-date">
               <div>
                 @if(fixture.isLive)
@@ -284,7 +284,7 @@
             @if(fixture.hasScore && fixture.status !== 'notstarted')
               <span class="fx-score"><b class="{{ fixture.homeLost ? 'lost' : '' }}">{{ fixture.homeScore }}</b><b class="{{ fixture.awayLost ? 'lost' : '' }}">{{ fixture.awayScore }}</b></span>
             @end
-          </div>
+          </a>
         @else
           <p class="empty-state">Aucun match synchronisé pour aujourd'hui.</p>
         @end

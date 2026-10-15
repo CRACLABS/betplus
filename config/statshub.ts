@@ -11,6 +11,10 @@ const statshubConfig = {
   scraperId: env.get('STATSHUB_SCRAPER_ID', 'e1f0e079-0946-4b6c-9e3c-9227eddaa64a'),
   timeoutMs: 30_000,
   /**
+   * Parse credits the app may spend per calendar month (free tier: 200).
+   */
+  monthlyBudget: env.get('STATSHUB_MONTHLY_BUDGET', 200),
+  /**
    * Team and competition logos. StatsHub ids are the same as SofaScore's, so
    * `node ace statshub:sync-logos` downloads the images from its image server
    * once into public/logos/ (no Parse credits spent).

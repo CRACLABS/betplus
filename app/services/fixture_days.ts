@@ -1,5 +1,6 @@
 import Fixture from '#models/fixture'
 import FixtureDay from '#models/fixture_day'
+import CreditLedger from '#services/credit_ledger'
 import LogoStore from '#services/logo_store'
 import StatsHubClient, { type StatsHubFixture } from '#services/statshub_client'
 import { DateTime } from 'luxon'
@@ -44,8 +45,10 @@ export default class FixtureDays {
     const day = (await FixtureDay.findBy('date', date.toISODate()!)) ?? (await this.adopt(date))
     if (!FixtureDays.needsFetch(day, date)) return 'cached'
 
+    if (!(await CreditLedger.canSpend('get_fixtures_by_date'))) return 'error'
     try {
       const response = await this.client.fixturesByDate(date.toISODate()!)
+      await CreditLedger.record('get_fixtures_by_date')
       await FixtureDays.store(date.toISODate()!, response.fixtures ?? [])
     } catch {
       return 'error'

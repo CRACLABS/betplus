@@ -10,6 +10,7 @@ export type ScannedRoutes = {
     'groups': { paramsTuple?: []; params?: {} }
     'profiles': { paramsTuple?: []; params?: {} }
     'events': { paramsTuple?: []; params?: {} }
+    'matches.show': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
     'account.profile': { paramsTuple?: []; params?: {} }
@@ -33,6 +34,7 @@ export type ScannedRoutes = {
     'groups': { paramsTuple?: []; params?: {} }
     'profiles': { paramsTuple?: []; params?: {} }
     'events': { paramsTuple?: []; params?: {} }
+    'matches.show': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
     'account.profile': { paramsTuple?: []; params?: {} }
@@ -47,6 +49,7 @@ export type ScannedRoutes = {
     'groups': { paramsTuple?: []; params?: {} }
     'profiles': { paramsTuple?: []; params?: {} }
     'events': { paramsTuple?: []; params?: {} }
+    'matches.show': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'messages': { paramsTuple?: []; params?: {} }
     'alerts': { paramsTuple?: []; params?: {} }
     'account.profile': { paramsTuple?: []; params?: {} }

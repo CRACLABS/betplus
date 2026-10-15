@@ -1,0 +1,122 @@
+@layout({ title: 'BetPlus — ' + fixture.homeTeamName + ' – ' + fixture.awayTeamName })
+  <div class="section-page match-page">
+    <a href="/evenements{{ fixture.matchDate ? '?date=' + fixture.matchDate.toISODate() : '' }}" class="back-link">‹ Matchs du jour</a>
+
+    <section class="scoreboard {{ fixture.isLive ? 'is-live' : '' }}">
+      <div class="scoreboard-comp">
+        @!crest({ src: fixture.tournamentLogo, name: fixture.tournamentName, class: 'crest-sm' })
+        <span>{{ fixture.tournamentName ?? 'Compétition' }}{{ fixture.country ? ' · ' + fixture.country : '' }}{{ fixture.round ? ' · Journée ' + fixture.round : '' }}</span>
+      </div>
+      <div class="scoreboard-main">
+        <div class="scoreboard-team {{ fixture.homeLost ? 'lost' : '' }}">
+          @!crest({ src: fixture.homeLogo, name: fixture.homeTeamName, class: 'crest-xl' })
+          <b>{{ fixture.homeTeamName }}</b>
+        </div>
+        <div class="scoreboard-center">
+          @if(fixture.hasScore && fixture.status !== 'notstarted')
+            <div class="scoreboard-score">{{ fixture.homeScore }}<span>-</span>{{ fixture.awayScore }}</div>
+          @else
+            <div class="scoreboard-score is-time">{{ fixture.kickoffIn(timezone) ?? '–' }}</div>
+          @end
+          <span class="fx-status fx-{{ fixture.isLive ? 'live' : (fixture.isFinished ? 'done' : 'next') }}">{{ fixture.statusLabel }}</span>
+          @if(kickoffDate)
+            <small>{{ kickoffDate }} · {{ fixture.kickoffIn(timezone) }}</small>
+          @end
+        </div>
+        <div class="scoreboard-team {{ fixture.awayLost ? 'lost' : '' }}">
+          @!crest({ src: fixture.awayLogo, name: fixture.awayTeamName, class: 'crest-xl' })
+          <b>{{ fixture.awayTeamName }}</b>
+        </div>
+      </div>
+    </section>
+
+    @if(statsState === 'not-started')
+      <div class="settings-card stats-empty">
+        <h2>Statistiques</h2>
+        <p>Les statistiques du match (xG, tirs, joueurs) s'affichent dès le coup d'envoi.</p>
+      </div>
+    @elseif(stat && stat.hasCoverage)
+      @let(t = stat.totals)
+      <section class="settings-card">
+        <h2>Statistiques du match</h2>
+        <p>
+          @if(fixture.isLive)
+            Mises à jour toutes les {{ refreshMinutes }} min pendant le match · dernière à {{ updatedAt }}
+          @else
+            Statistiques finales
+          @end
+        </p>
+        @each(row in [
+          { label: 'Expected goals (xG)', home: stat.homeXg, away: stat.awayXg, decimals: 2 },
+          { label: 'Tirs', home: t.home.shots, away: t.away.shots, decimals: 0 },
+          { label: 'Tirs cadrés', home: t.home.onTarget, away: t.away.onTarget, decimals: 0 },
+        ])
+          @let(total = row.home + row.away)
+          <div class="stat-compare">
+            <div class="stat-compare-head">
+              <b class="{{ row.home > row.away ? 'lead' : '' }}">{{ row.home.toFixed(row.decimals) }}</b>
+              <span>{{ row.label }}</span>
+              <b class="{{ row.away > row.home ? 'lead' : '' }}">{{ row.away.toFixed(row.decimals) }}</b>
+            </div>
+            <div class="stat-compare-bar">
+              <i style="width: {{ total ? (row.home / total) * 100 : 50 }}%"></i>
+              <i style="width: {{ total ? (row.away / total) * 100 : 50 }}%"></i>
+            </div>
+          </div>
+        @end
+      </section>
+
+      <div class="players-grid">
+        @each(side in [
+          { name: fixture.homeTeamName, logo: fixture.homeLogo, players: stat.homePlayers },
+          { name: fixture.awayTeamName, logo: fixture.awayLogo, players: stat.awayPlayers },
+        ])
+          <section class="settings-card players-card">
+            <h2 class="players-title">
+              @!crest({ src: side.logo, name: side.name })
+              {{ side.name }}
+            </h2>
+            @if(side.players.length)
+              <table class="players-table">
+                <thead>
+                  <tr><th>Joueur</th><th title="Buts">B</th><th title="Tirs">T</th><th title="Tirs cadrés">TC</th><th>xG</th></tr>
+                </thead>
+                <tbody>
+                  @each(player in side.players)
+                    <tr>
+                      <td>{{ player.name }}</td>
+                      <td class="{{ player.goals ? 'goal' : '' }}">{{ player.goals }}</td>
+                      <td>{{ player.shots }}</td>
+                      <td>{{ player.shotsOnTarget }}</td>
+                      <td>{{ player.xg.toFixed(2) }}</td>
+                    </tr>
+                  @end
+                </tbody>
+              </table>
+            @else
+              <p class="muted">Aucun tir enregistré.</p>
+            @end
+          </section>
+        @end
+      </div>
+    @else
+      <div class="settings-card stats-empty">
+        <h2>Statistiques</h2>
+        @if(statsState === 'budget')
+          <p>La limite mensuelle de crédits StatsHub est presque atteinte : les statistiques sont mises en pause pour garder la mise à jour des matchs.</p>
+        @elseif(statsState === 'error')
+          <p>Impossible de charger les statistiques pour le moment. Réessaie dans quelques minutes.</p>
+        @else
+          <p>StatsHub n'a pas de carte des tirs pour ce match : pas de xG ni de statistiques joueurs.</p>
+        @end
+      </div>
+    @end
+  </div>
+
+  @if(fixture.isLive)
+    <script>
+      // The score comes from our database, so reloading costs no credits.
+      setTimeout(function () { location.reload() }, 60000)
+    </script>
+  @end
+@end

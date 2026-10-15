@@ -6,6 +6,7 @@
 export const controllers = {
   Account: () => import('#controllers/account_controller'),
   Feed: () => import('#controllers/feed_controller'),
+  Matches: () => import('#controllers/matches_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Sections: () => import('#controllers/sections_controller'),
   Session: () => import('#controllers/session_controller'),

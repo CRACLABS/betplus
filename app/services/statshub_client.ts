@@ -25,7 +25,19 @@ export type FixturesByDateResponse = {
   fixtures: StatsHubFixture[]
 }
 
-type Options = Omit<typeof statshubConfig, 'logoBaseUrl'> & { fetch?: typeof fetch }
+export type MatchStatsResponse = {
+  home_xg?: number
+  away_xg?: number
+  home_xga?: number
+  away_xga?: number
+  home_players?: unknown[]
+  away_players?: unknown[]
+  [key: string]: unknown
+}
+
+type Options = Omit<typeof statshubConfig, 'logoBaseUrl' | 'monthlyBudget'> & {
+  fetch?: typeof fetch
+}
 
 /**
  * Thin client for the "statshub.com API" hosted on Parse.
@@ -39,6 +51,17 @@ export default class StatsHubClient {
    */
   fixturesByDate(date?: string) {
     return this.get<FixturesByDateResponse>('get_fixtures_by_date', date ? { date } : {})
+  }
+
+  /**
+   * xG and per-player shots for one match. Costs 5 credits.
+   */
+  matchStats(fixture: { eventId: number; homeTeamId: number; awayTeamId: number }) {
+    return this.get<MatchStatsResponse>('get_match_stats', {
+      event_id: fixture.eventId,
+      home_team_id: fixture.homeTeamId,
+      away_team_id: fixture.awayTeamId,
+    })
   }
 
   /**

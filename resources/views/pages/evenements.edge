@@ -48,7 +48,7 @@
             <span>{{ competition.name }}</span>
           </div>
           @each(match in competition.matches)
-            <div class="fx-row {{ match.isLive ? 'is-live' : '' }}">
+            <a href="/match/{{ match.eventId }}" class="fx-row {{ match.isLive ? 'is-live' : '' }}">
               <div class="fx-time">
                 <b>{{ match.kickoffIn(auth.user.prefs.timezone) ?? '–' }}</b>
                 <span class="fx-status fx-{{ match.isLive ? 'live' : (match.isFinished ? 'done' : 'next') }}">{{ match.statusLabel }}</span>
@@ -69,7 +69,7 @@
                   <b class="{{ match.awayLost ? 'lost' : '' }}">{{ match.awayScore }}</b>
                 </div>
               @end
-            </div>
+            </a>
           @end
         @end
       </div>

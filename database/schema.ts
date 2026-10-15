@@ -67,6 +67,38 @@ export class FixtureSchema extends BaseModel {
   declare winnerCode: number | null
 }
 
+export class MatchStatSchema extends BaseModel {
+  static $columns = ['createdAt', 'eventId', 'fetchedAt', 'id', 'isFinal', 'payload', 'updatedAt'] as const
+  $columns = MatchStatSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare eventId: number
+  @column.dateTime()
+  declare fetchedAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isFinal: boolean
+  @column()
+  declare payload: any
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class StatshubCallSchema extends BaseModel {
+  static $columns = ['createdAt', 'credits', 'endpoint', 'id'] as const
+  $columns = StatshubCallSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare credits: number
+  @column()
+  declare endpoint: string
+  @column({ isPrimary: true })
+  declare id: number
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['bio', 'createdAt', 'email', 'favoriteSport', 'fullName', 'id', 'isPremium', 'password', 'preferences', 'role', 'updatedAt', 'username'] as const
   $columns = UserSchema.$columns
